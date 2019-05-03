@@ -50,16 +50,24 @@ declare class SpeedcontrolUtil {
     timer: Replicant<Timer>;
     constructor(nodecg: NodeCG);
     /**
-     * Gets the next X runs in the schedule after the supplied run.
-     * @param run Run data object.
-     * @param amount Maximum amount of runs to return.
+     * Returns the currently active run data object.
      */
-    getNextRuns(run: RunData, amount: number): RunData[];
+    getCurrentRun(): RunData | undefined;
+    /**
+     * Returns the array of runs.
+     */
+    getRunDataArray(): RunData[];
+    /**
+     * Gets the next X runs in the schedule after the supplied run.
+     * @param amount Maximum amount of runs to return, defaults to 4.
+     * @param run Run data object, defaults to current run.
+     */
+    getNextRuns(amount?: number, run?: RunData | undefined): RunData[];
     /**
      * Find run data array index of current run based on it's ID.
-     * @param run Run data object.
+     * @param run Run data object, defaults to current run.
      */
-    findIndexInRunDataArray(run?: RunData): number;
+    findIndexInRunDataArray(run?: RunData | undefined): number;
     /**
      * Gets the total amount of players in a specified run.
      * @param run Run data object.

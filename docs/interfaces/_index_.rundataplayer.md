@@ -26,7 +26,7 @@
 
 **● country**: *`undefined` \| `string`*
 
-*Defined in [index.ts:33](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L33)*
+*Defined in [index.ts:33](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L33)*
 
 ___
 <a id="id"></a>
@@ -35,7 +35,7 @@ ___
 
 **● id**: *`number`*
 
-*Defined in [index.ts:31](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L31)*
+*Defined in [index.ts:31](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L31)*
 
 ___
 <a id="name"></a>
@@ -44,7 +44,7 @@ ___
 
 **● name**: *`string`*
 
-*Defined in [index.ts:30](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L30)*
+*Defined in [index.ts:30](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L30)*
 
 ___
 <a id="social"></a>
@@ -53,7 +53,7 @@ ___
 
 **● social**: *`object`*
 
-*Defined in [index.ts:34](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L34)*
+*Defined in [index.ts:34](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L34)*
 
 #### Type declaration
 
@@ -66,7 +66,7 @@ ___
 
 **● teamID**: *`number`*
 
-*Defined in [index.ts:32](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L32)*
+*Defined in [index.ts:32](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L32)*
 
 ___
 

@@ -24,7 +24,7 @@
 
 **● id**: *`number`*
 
-*Defined in [index.ts:25](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L25)*
+*Defined in [index.ts:25](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L25)*
 
 ___
 <a id="name"></a>
@@ -33,7 +33,7 @@ ___
 
 **● name**: *`undefined` \| `string`*
 
-*Defined in [index.ts:24](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L24)*
+*Defined in [index.ts:24](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L24)*
 
 ___
 <a id="players"></a>
@@ -42,7 +42,7 @@ ___
 
 **● players**: *[RunDataPlayer](_index_.rundataplayer.md)[]*
 
-*Defined in [index.ts:26](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L26)*
+*Defined in [index.ts:26](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L26)*
 
 ___
 

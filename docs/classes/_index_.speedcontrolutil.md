@@ -24,7 +24,9 @@
 * [checkForTotalPlayers](_index_.speedcontrolutil.md#checkfortotalplayers)
 * [findIndexInRunDataArray](_index_.speedcontrolutil.md#findindexinrundataarray)
 * [formPlayerNamesString](_index_.speedcontrolutil.md#formplayernamesstring)
+* [getCurrentRun](_index_.speedcontrolutil.md#getcurrentrun)
 * [getNextRuns](_index_.speedcontrolutil.md#getnextruns)
+* [getRunDataArray](_index_.speedcontrolutil.md#getrundataarray)
 
 ---
 
@@ -36,7 +38,7 @@
 
 ⊕ **new SpeedcontrolUtil**(nodecg: *`NodeCG`*): [SpeedcontrolUtil](_index_.speedcontrolutil.md)
 
-*Defined in [index.ts:56](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L56)*
+*Defined in [index.ts:56](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L56)*
 
 **Parameters:**
 
@@ -56,7 +58,7 @@ ___
 
 **● nodecgContext**: *`NodeCG`*
 
-*Defined in [index.ts:53](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L53)*
+*Defined in [index.ts:53](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L53)*
 
 ___
 <a id="rundataactiverun"></a>
@@ -65,7 +67,7 @@ ___
 
 **● runDataActiveRun**: *`Replicant`<[RunData](../interfaces/_index_.rundata.md) \| `undefined`>*
 
-*Defined in [index.ts:55](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L55)*
+*Defined in [index.ts:55](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L55)*
 
 ___
 <a id="rundataarray"></a>
@@ -74,7 +76,7 @@ ___
 
 **● runDataArray**: *`Replicant`<[RunData](../interfaces/_index_.rundata.md)[]>*
 
-*Defined in [index.ts:54](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L54)*
+*Defined in [index.ts:54](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L54)*
 
 ___
 <a id="timer"></a>
@@ -83,7 +85,7 @@ ___
 
 **● timer**: *`Replicant`<[Timer](../interfaces/_index_.timer.md)>*
 
-*Defined in [index.ts:56](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L56)*
+*Defined in [index.ts:56](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L56)*
 
 ___
 
@@ -95,7 +97,7 @@ ___
 
 ▸ **checkForTotalPlayers**(run: *[RunData](../interfaces/_index_.rundata.md)*): `number`
 
-*Defined in [index.ts:106](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L106)*
+*Defined in [index.ts:121](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L121)*
 
 Gets the total amount of players in a specified run.
 
@@ -112,17 +114,17 @@ ___
 
 ###  findIndexInRunDataArray
 
-▸ **findIndexInRunDataArray**(run?: *[RunData](../interfaces/_index_.rundata.md)*): `number`
+▸ **findIndexInRunDataArray**(run?: *[RunData](../interfaces/_index_.rundata.md) \| `undefined`*): `number`
 
-*Defined in [index.ts:86](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L86)*
+*Defined in [index.ts:101](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L101)*
 
 Find run data array index of current run based on it's ID.
 
 **Parameters:**
 
-| Name | Type | Description |
-| ------ | ------ | ------ |
-| `Optional` run | [RunData](../interfaces/_index_.rundata.md) |  Run data object. |
+| Name | Type | Default value | Description |
+| ------ | ------ | ------ | ------ |
+| `Default value` run | [RunData](../interfaces/_index_.rundata.md) \| `undefined` |  this.getCurrentRun() |  Run data object, defaults to current run. |
 
 **Returns:** `number`
 
@@ -133,7 +135,7 @@ ___
 
 ▸ **formPlayerNamesString**(run: *[RunData](../interfaces/_index_.rundata.md)*): `string`
 
-*Defined in [index.ts:116](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L116)*
+*Defined in [index.ts:131](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L131)*
 
 Goes through each team and players and makes a string to show the names correctly together.
 
@@ -146,22 +148,48 @@ Goes through each team and players and makes a string to show the names correctl
 **Returns:** `string`
 
 ___
+<a id="getcurrentrun"></a>
+
+###  getCurrentRun
+
+▸ **getCurrentRun**(): [RunData](../interfaces/_index_.rundata.md) \| `undefined`
+
+*Defined in [index.ts:68](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L68)*
+
+Returns the currently active run data object.
+
+**Returns:** [RunData](../interfaces/_index_.rundata.md) \| `undefined`
+
+___
 <a id="getnextruns"></a>
 
 ###  getNextRuns
 
-▸ **getNextRuns**(run: *[RunData](../interfaces/_index_.rundata.md)*, amount: *`number`*): [RunData](../interfaces/_index_.rundata.md)[]
+▸ **getNextRuns**(amount?: *`number`*, run?: *[RunData](../interfaces/_index_.rundata.md) \| `undefined`*): [RunData](../interfaces/_index_.rundata.md)[]
 
-*Defined in [index.ts:70](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L70)*
+*Defined in [index.ts:85](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L85)*
 
 Gets the next X runs in the schedule after the supplied run.
 
 **Parameters:**
 
-| Name | Type | Description |
-| ------ | ------ | ------ |
-| run | [RunData](../interfaces/_index_.rundata.md) |  Run data object. |
-| amount | `number` |  Maximum amount of runs to return. |
+| Name | Type | Default value | Description |
+| ------ | ------ | ------ | ------ |
+| `Default value` amount | `number` | 4 |  Maximum amount of runs to return, defaults to 4. |
+| `Default value` run | [RunData](../interfaces/_index_.rundata.md) \| `undefined` |  this.getCurrentRun() |  Run data object, defaults to current run. |
+
+**Returns:** [RunData](../interfaces/_index_.rundata.md)[]
+
+___
+<a id="getrundataarray"></a>
+
+###  getRunDataArray
+
+▸ **getRunDataArray**(): [RunData](../interfaces/_index_.rundata.md)[]
+
+*Defined in [index.ts:75](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L75)*
+
+Returns the array of runs.
 
 **Returns:** [RunData](../interfaces/_index_.rundata.md)[]
 

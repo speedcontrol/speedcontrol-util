@@ -27,7 +27,7 @@
 
 **● milliseconds**: *`number`*
 
-*Defined in [index.ts:42](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L42)*
+*Defined in [index.ts:42](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L42)*
 
 ___
 <a id="state"></a>
@@ -36,7 +36,7 @@ ___
 
 **● state**: *`string`*
 
-*Defined in [index.ts:41](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L41)*
+*Defined in [index.ts:41](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L41)*
 
 ___
 <a id="time"></a>
@@ -45,7 +45,7 @@ ___
 
 **● time**: *`string`*
 
-*Defined in [index.ts:40](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L40)*
+*Defined in [index.ts:40](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L40)*
 
 ___
 <a id="timestamp"></a>
@@ -54,7 +54,7 @@ ___
 
 **● timestamp**: *`number`*
 
-*Defined in [index.ts:43](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L43)*
+*Defined in [index.ts:43](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L43)*
 
 ___
 

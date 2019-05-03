@@ -30,7 +30,7 @@
 
 *Inherited from [TimerBasic](_index_.timerbasic.md).[milliseconds](_index_.timerbasic.md#milliseconds)*
 
-*Defined in [index.ts:42](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L42)*
+*Defined in [index.ts:42](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L42)*
 
 ___
 <a id="state"></a>
@@ -41,7 +41,7 @@ ___
 
 *Inherited from [TimerBasic](_index_.timerbasic.md).[state](_index_.timerbasic.md#state)*
 
-*Defined in [index.ts:41](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L41)*
+*Defined in [index.ts:41](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L41)*
 
 ___
 <a id="teamfinishtimes"></a>
@@ -50,7 +50,7 @@ ___
 
 **● teamFinishTimes**: *`object`*
 
-*Defined in [index.ts:47](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L47)*
+*Defined in [index.ts:47](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L47)*
 
 #### Type declaration
 
@@ -65,7 +65,7 @@ ___
 
 *Inherited from [TimerBasic](_index_.timerbasic.md).[time](_index_.timerbasic.md#time)*
 
-*Defined in [index.ts:40](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L40)*
+*Defined in [index.ts:40](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L40)*
 
 ___
 <a id="timestamp"></a>
@@ -76,7 +76,7 @@ ___
 
 *Inherited from [TimerBasic](_index_.timerbasic.md).[timestamp](_index_.timerbasic.md#timestamp)*
 
-*Defined in [index.ts:43](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L43)*
+*Defined in [index.ts:43](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L43)*
 
 ___
 

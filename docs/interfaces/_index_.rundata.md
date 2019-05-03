@@ -36,7 +36,7 @@
 
 **● category**: *`undefined` \| `string`*
 
-*Defined in [index.ts:9](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L9)*
+*Defined in [index.ts:9](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L9)*
 
 ___
 <a id="customdata"></a>
@@ -45,7 +45,7 @@ ___
 
 **● customData**: *`object`*
 
-*Defined in [index.ts:17](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L17)*
+*Defined in [index.ts:17](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L17)*
 
 #### Type declaration
 
@@ -58,7 +58,7 @@ ___
 
 **● estimate**: *`undefined` \| `string`*
 
-*Defined in [index.ts:10](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L10)*
+*Defined in [index.ts:10](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L10)*
 
 ___
 <a id="estimates"></a>
@@ -67,7 +67,7 @@ ___
 
 **● estimateS**: *`undefined` \| `number`*
 
-*Defined in [index.ts:11](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L11)*
+*Defined in [index.ts:11](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L11)*
 
 ___
 <a id="game"></a>
@@ -76,7 +76,7 @@ ___
 
 **● game**: *`undefined` \| `string`*
 
-*Defined in [index.ts:4](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L4)*
+*Defined in [index.ts:4](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L4)*
 
 ___
 <a id="gametwitch"></a>
@@ -85,7 +85,7 @@ ___
 
 **● gameTwitch**: *`undefined` \| `string`*
 
-*Defined in [index.ts:5](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L5)*
+*Defined in [index.ts:5](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L5)*
 
 ___
 <a id="id"></a>
@@ -94,7 +94,7 @@ ___
 
 **● id**: *`number`*
 
-*Defined in [index.ts:20](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L20)*
+*Defined in [index.ts:20](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L20)*
 
 ___
 <a id="region"></a>
@@ -103,7 +103,7 @@ ___
 
 **● region**: *`undefined` \| `string`*
 
-*Defined in [index.ts:7](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L7)*
+*Defined in [index.ts:7](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L7)*
 
 ___
 <a id="release"></a>
@@ -112,7 +112,7 @@ ___
 
 **● release**: *`undefined` \| `string`*
 
-*Defined in [index.ts:8](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L8)*
+*Defined in [index.ts:8](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L8)*
 
 ___
 <a id="scheduled"></a>
@@ -121,7 +121,7 @@ ___
 
 **● scheduled**: *`undefined` \| `string`*
 
-*Defined in [index.ts:14](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L14)*
+*Defined in [index.ts:14](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L14)*
 
 ___
 <a id="scheduleds"></a>
@@ -130,7 +130,7 @@ ___
 
 **● scheduledS**: *`undefined` \| `number`*
 
-*Defined in [index.ts:15](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L15)*
+*Defined in [index.ts:15](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L15)*
 
 ___
 <a id="setuptime"></a>
@@ -139,7 +139,7 @@ ___
 
 **● setupTime**: *`undefined` \| `string`*
 
-*Defined in [index.ts:12](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L12)*
+*Defined in [index.ts:12](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L12)*
 
 ___
 <a id="setuptimes"></a>
@@ -148,7 +148,7 @@ ___
 
 **● setupTimeS**: *`undefined` \| `number`*
 
-*Defined in [index.ts:13](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L13)*
+*Defined in [index.ts:13](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L13)*
 
 ___
 <a id="system"></a>
@@ -157,7 +157,7 @@ ___
 
 **● system**: *`undefined` \| `string`*
 
-*Defined in [index.ts:6](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L6)*
+*Defined in [index.ts:6](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L6)*
 
 ___
 <a id="teams"></a>
@@ -166,7 +166,7 @@ ___
 
 **● teams**: *[RunDataTeams](_index_.rundatateams.md)[]*
 
-*Defined in [index.ts:16](https://github.com/speedcontrol/speedcontrol-util/blob/2d9a800/index.ts#L16)*
+*Defined in [index.ts:16](https://github.com/speedcontrol/speedcontrol-util/blob/1603e07/index.ts#L16)*
 
 ___
 
