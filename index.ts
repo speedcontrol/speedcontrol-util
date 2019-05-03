@@ -63,33 +63,48 @@ class SpeedcontrolUtil {
   }
 
   /**
-   * Gets the next X runs in the schedule after the supplied run.
-   * @param run Run data object.
-   * @param amount Maximum amount of runs to return.
+   * Returns the currently active run data object.
    */
-  getNextRuns(run: RunData, amount: number): RunData[] {
+  getCurrentRun(): RunData | undefined {
+    return this.runDataActiveRun.value;
+  }
+
+  /**
+   * Returns the array of runs.
+   */
+  getRunDataArray(): RunData[] {
+    return this.runDataArray.value;
+  }
+
+  /**
+   * Gets the next X runs in the schedule after the supplied run.
+   * @param amount Maximum amount of runs to return, defaults to 4.
+   * @param run Run data object, defaults to current run.
+   */
+  // tslint:disable-next-line: max-line-length
+  getNextRuns(amount: number = 4, run: RunData | undefined = this.getCurrentRun()): RunData[] {
     const nextRuns: RunData[] = [];
     const indexOfCurrentRun = this.findIndexInRunDataArray(run);
     for (let i = 1; i <= amount; i = i + 1) {
-      if (!this.runDataArray.value[indexOfCurrentRun + i]) {
+      if (!this.getRunDataArray()[indexOfCurrentRun + i]) {
         break;
       }
-      nextRuns.push(this.runDataArray.value[indexOfCurrentRun + i]);
+      nextRuns.push(this.getRunDataArray()[indexOfCurrentRun + i]);
     }
     return nextRuns;
   }
 
   /**
    * Find run data array index of current run based on it's ID.
-   * @param run Run data object.
+   * @param run Run data object, defaults to current run.
    */
-  findIndexInRunDataArray(run?: RunData): number {
+  findIndexInRunDataArray(run: RunData | undefined = this.getCurrentRun()): number {
     let indexOfRun = -1;
 
     // Completely skips this if the run variable isn't defined.
     if (run) {
-      for (let i = 0; i < this.runDataArray.value.length; i = i + 1) {
-        if (run.id === this.runDataArray.value[i].id) {
+      for (let i = 0; i < this.getRunDataArray().length; i = i + 1) {
+        if (run.id === this.getRunDataArray()[i].id) {
           indexOfRun = i;
           break;
         }
