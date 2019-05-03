@@ -5,7 +5,8 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "npx tsc -b tsconfig.json"
+    "build": "npx tsc -b tsconfig.json",
+    "docs": "npx typedoc --theme markdown --out ./docs index.ts"
   },
   "repository": {
     "type": "git",
@@ -25,10 +26,12 @@
   },
   "homepage": "https://github.com/speedcontrol/speedcontrol-util#readme",
   "devDependencies": {
+    "nodecg": "^1.4.0",
     "tslint": "^5.16.0",
     "tslint-config-airbnb": "^5.11.1",
-    "typescript": "^3.4.4",
-    "nodecg": "^1.4.0"
+    "typedoc": "^0.14.2",
+    "typedoc-plugin-markdown": "^1.2.0",
+    "typescript": "^3.4.4"
   },
   "dependencies": {
     "@types/node": "^11.13.7"
