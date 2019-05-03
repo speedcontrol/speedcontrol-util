@@ -1,0 +1,35 @@
+{
+  "name": "speedcontrol-util",
+  "description": "Node.js package with utilities to help you code NodeCG bundles that interface with the nodecg-speedcontrol bundle.",
+  "version": "0.1.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "npx tsc -b tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/speedcontrol/speedcontrol-util.git"
+  },
+  "keywords": [
+    "nodecg-speedcontrol",
+    "speedcontrol",
+    "utility",
+    "util",
+    "helper"
+  ],
+  "author": "zoton2",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/speedcontrol/speedcontrol-util/issues"
+  },
+  "homepage": "https://github.com/speedcontrol/speedcontrol-util#readme",
+  "devDependencies": {
+    "tslint": "^5.16.0",
+    "tslint-config-airbnb": "^5.11.1",
+    "typescript": "^3.4.4"
+  },
+  "dependencies": {
+    "@types/node": "^11.13.7"
+  }
+}
