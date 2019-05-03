@@ -21,7 +21,7 @@ interface RunDataPlayer {
   };
 }
 
-export class SpeedcontrolUtil {
+class SpeedcontrolUtil {
   nodecgContext: NodeCG;
   runDataArray: Replicant<RunData[]>;
 
@@ -95,3 +95,5 @@ export class SpeedcontrolUtil {
     return namesList;
   }
 }
+
+export = SpeedcontrolUtil;

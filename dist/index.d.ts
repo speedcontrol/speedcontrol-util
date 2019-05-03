@@ -17,7 +17,7 @@ interface RunDataPlayer {
         twitch: string;
     };
 }
-export declare class SpeedcontrolUtil {
+declare class SpeedcontrolUtil {
     nodecgContext: NodeCG;
     runDataArray: Replicant<RunData[]>;
     constructor(nodecg: NodeCG);
@@ -43,4 +43,4 @@ export declare class SpeedcontrolUtil {
      */
     formPlayerNamesString(run: RunData): string;
 }
-export {};
+export = SpeedcontrolUtil;

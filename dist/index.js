@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var SpeedcontrolUtil = /** @class */ (function () {
     function SpeedcontrolUtil(nodecg) {
         this.nodecgContext = nodecg;
@@ -66,5 +65,5 @@ var SpeedcontrolUtil = /** @class */ (function () {
     };
     return SpeedcontrolUtil;
 }());
-exports.SpeedcontrolUtil = SpeedcontrolUtil;
+module.exports = SpeedcontrolUtil;
 //# sourceMappingURL=index.js.map
