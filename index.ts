@@ -27,7 +27,7 @@ interface RunDataTeams {
 }
 
 interface RunDataPlayer {
-  name?: string;
+  name: string;
   id: number;
   teamID: number;
   country?: string;

@@ -3,6 +3,8 @@ var SpeedcontrolUtil = /** @class */ (function () {
     function SpeedcontrolUtil(nodecg) {
         this.nodecgContext = nodecg;
         this.runDataArray = nodecg.Replicant('runDataArray', 'nodecg-speedcontrol');
+        this.runDataActiveRun = nodecg.Replicant('runDataActiveRun', 'nodecg-speedcontrol');
+        this.timer = nodecg.Replicant('timer', 'nodecg-speedcontrol');
     }
     /**
      * Gets the next X runs in the schedule after the supplied run.
