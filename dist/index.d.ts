@@ -1,73 +1,31 @@
+import { RunData, RunDataActiveRun, RunDataArray, Timer } from 'nodecg-speedcontrol/types';
 import { NodeCG, Replicant } from 'nodecg/types/server';
-interface RunData {
-    game?: string;
-    gameTwitch?: string;
-    system?: string;
-    region?: string;
-    release?: string;
-    category?: string;
-    estimate?: string;
-    estimateS?: number;
-    setupTime?: string;
-    setupTimeS?: number;
-    scheduled?: string;
-    scheduledS?: number;
-    teams: RunDataTeams[];
-    customData: {
-        [key: string]: string;
-    };
-    id: number;
-}
-interface RunDataTeams {
-    name?: string;
-    id: number;
-    players: RunDataPlayer[];
-}
-interface RunDataPlayer {
-    name: string;
-    id: number;
-    teamID: number;
-    country?: string;
-    social: {
-        twitch?: string;
-    };
-}
-interface TimerBasic {
-    time: string;
-    state: string;
-    milliseconds: number;
-    timestamp: number;
-}
-interface Timer extends TimerBasic {
-    teamFinishTimes: {
-        [id: number]: TimerBasic;
-    };
-}
 declare class SpeedcontrolUtil {
     private nodecgContext;
-    runDataArray: Replicant<RunData[]>;
-    runDataActiveRun: Replicant<RunData | undefined>;
+    runDataArray: Replicant<RunDataArray>;
+    runDataActiveRun: Replicant<RunDataActiveRun>;
     timer: Replicant<Timer>;
     constructor(nodecg: NodeCG);
     /**
      * Returns the currently active run data object.
      */
-    getCurrentRun(): RunData | undefined;
+    getCurrentRun(): RunDataActiveRun;
     /**
      * Returns the array of runs.
      */
-    getRunDataArray(): RunData[];
+    getRunDataArray(): RunDataArray;
     /**
      * Gets the next X runs in the schedule after the supplied run.
      * @param amount Maximum amount of runs to return, defaults to 4.
-     * @param run Run data object, defaults to current run.
+     * @param run Run data object, defaults to current run. Will grab from the start if not set.
      */
-    getNextRuns(amount?: number, run?: RunData | undefined): RunData[];
+    getNextRuns(amount?: number, run?: RunData | null): RunData[];
     /**
      * Find run data array index of current run based on it's ID.
+     * Will return -1 if it cannot be found.
      * @param run Run data object, defaults to current run.
      */
-    findIndexInRunDataArray(run?: RunData | undefined): number;
+    findIndexInRunDataArray(run?: RunData | null): number;
     /**
      * Gets the total amount of players in a specified run.
      * @param run Run data object.
@@ -78,5 +36,18 @@ declare class SpeedcontrolUtil {
      * @param run Run data object.
      */
     formPlayerNamesString(run: RunData): string;
+    /**
+     * Starts the nodecg-speedcontrol timer.
+     */
+    startTimer(): void;
+    /**
+     * Stops the nodecg-speedcontrol timer for the specified team, or the 1st team if none specified.
+     * @param teamID Team to stop the timer for; 1st team if none specified.
+     */
+    stopTimer(teamID?: number): void;
+    /**
+     * Resets the nodecg-speedcontrol timer.
+     */
+    resetTimer(): void;
 }
 export = SpeedcontrolUtil;

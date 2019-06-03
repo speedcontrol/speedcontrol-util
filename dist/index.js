@@ -1,10 +1,11 @@
 "use strict";
+var sc = 'nodecg-speedcontrol';
 var SpeedcontrolUtil = /** @class */ (function () {
     function SpeedcontrolUtil(nodecg) {
         this.nodecgContext = nodecg;
-        this.runDataArray = nodecg.Replicant('runDataArray', 'nodecg-speedcontrol');
-        this.runDataActiveRun = nodecg.Replicant('runDataActiveRun', 'nodecg-speedcontrol');
-        this.timer = nodecg.Replicant('timer', 'nodecg-speedcontrol');
+        this.runDataArray = nodecg.Replicant('runDataArray', sc);
+        this.runDataActiveRun = nodecg.Replicant('runDataActiveRun', sc);
+        this.timer = nodecg.Replicant('timer', sc);
     }
     /**
      * Returns the currently active run data object.
@@ -21,9 +22,8 @@ var SpeedcontrolUtil = /** @class */ (function () {
     /**
      * Gets the next X runs in the schedule after the supplied run.
      * @param amount Maximum amount of runs to return, defaults to 4.
-     * @param run Run data object, defaults to current run.
+     * @param run Run data object, defaults to current run. Will grab from the start if not set.
      */
-    // tslint:disable-next-line: max-line-length
     SpeedcontrolUtil.prototype.getNextRuns = function (amount, run) {
         if (amount === void 0) { amount = 4; }
         if (run === void 0) { run = this.getCurrentRun(); }
@@ -39,6 +39,7 @@ var SpeedcontrolUtil = /** @class */ (function () {
     };
     /**
      * Find run data array index of current run based on it's ID.
+     * Will return -1 if it cannot be found.
      * @param run Run data object, defaults to current run.
      */
     SpeedcontrolUtil.prototype.findIndexInRunDataArray = function (run) {
@@ -80,6 +81,29 @@ var SpeedcontrolUtil = /** @class */ (function () {
             namesList = namesArray.join(' vs. ');
         }
         return namesList;
+    };
+    /**
+     * Starts the nodecg-speedcontrol timer.
+     */
+    SpeedcontrolUtil.prototype.startTimer = function () {
+        // @ts-ignore: NodeCG not declaring this (yet).
+        this.nodecgContext.sendMessageToBundle('startTimer', sc);
+    };
+    /**
+     * Stops the nodecg-speedcontrol timer for the specified team, or the 1st team if none specified.
+     * @param teamID Team to stop the timer for; 1st team if none specified.
+     */
+    SpeedcontrolUtil.prototype.stopTimer = function (teamID) {
+        if (teamID === void 0) { teamID = 0; }
+        // @ts-ignore: NodeCG not declaring this (yet).
+        this.nodecgContext.sendMessageToBundle('stopTimer', sc, teamID);
+    };
+    /**
+     * Resets the nodecg-speedcontrol timer.
+     */
+    SpeedcontrolUtil.prototype.resetTimer = function () {
+        // @ts-ignore: NodeCG not declaring this (yet).
+        this.nodecgContext.sendMessageToBundle('resetTimer', sc);
     };
     return SpeedcontrolUtil;
 }());

@@ -1,88 +1,40 @@
+import { RunData, RunDataActiveRun, RunDataArray, Timer } from 'nodecg-speedcontrol/types';
 import { NodeCG, Replicant } from 'nodecg/types/server';
-
-interface RunData {
-  game?: string;
-  gameTwitch?: string;
-  system?: string;
-  region?: string;
-  release?: string;
-  category?: string;
-  estimate?: string;
-  estimateS?: number;
-  setupTime?: string;
-  setupTimeS?: number;
-  scheduled?: string;
-  scheduledS?: number;
-  teams: RunDataTeams[];
-  customData: {
-    [key: string]: string;
-  };
-  id: number;
-}
-
-interface RunDataTeams {
-  name?: string;
-  id: number;
-  players: RunDataPlayer[];
-}
-
-interface RunDataPlayer {
-  name: string;
-  id: number;
-  teamID: number;
-  country?: string;
-  social: {
-    twitch?: string;
-  };
-}
-
-interface TimerBasic {
-  time: string;
-  state: string;
-  milliseconds: number;
-  timestamp: number;
-}
-
-interface Timer extends TimerBasic {
-  teamFinishTimes: {
-    [id: number]: TimerBasic;
-  };
-}
+const sc = 'nodecg-speedcontrol';
 
 class SpeedcontrolUtil {
   private nodecgContext: NodeCG;
-  runDataArray: Replicant<RunData[]>;
-  runDataActiveRun: Replicant<RunData | undefined>;
+  runDataArray: Replicant<RunDataArray>;
+  runDataActiveRun: Replicant<RunDataActiveRun>;
   timer: Replicant<Timer>;
 
   constructor(nodecg: NodeCG) {
     this.nodecgContext = nodecg;
-    this.runDataArray = nodecg.Replicant<RunData[]>('runDataArray', 'nodecg-speedcontrol');
-    this.runDataActiveRun = nodecg.Replicant<RunData>('runDataActiveRun', 'nodecg-speedcontrol');
-    this.timer = nodecg.Replicant<Timer>('timer', 'nodecg-speedcontrol');
+    this.runDataArray = nodecg.Replicant<RunDataArray>('runDataArray', sc);
+    this.runDataActiveRun = nodecg.Replicant<RunDataActiveRun>('runDataActiveRun', sc);
+    this.timer = nodecg.Replicant<Timer>('timer', sc);
   }
 
   /**
    * Returns the currently active run data object.
    */
-  getCurrentRun(): RunData | undefined {
+  getCurrentRun(): RunDataActiveRun {
     return this.runDataActiveRun.value;
   }
 
   /**
    * Returns the array of runs.
    */
-  getRunDataArray(): RunData[] {
+  getRunDataArray(): RunDataArray {
     return this.runDataArray.value;
   }
 
   /**
    * Gets the next X runs in the schedule after the supplied run.
    * @param amount Maximum amount of runs to return, defaults to 4.
-   * @param run Run data object, defaults to current run.
+   * @param run Run data object, defaults to current run. Will grab from the start if not set.
    */
-  // tslint:disable-next-line: max-line-length
-  getNextRuns(amount: number = 4, run: RunData | undefined = this.getCurrentRun()): RunData[] {
+  getNextRuns(amount: number = 4, run: RunData | null = this.getCurrentRun()): RunData[] {
     const nextRuns: RunData[] = [];
     const indexOfCurrentRun = this.findIndexInRunDataArray(run);
     for (let i = 1; i <= amount; i = i + 1) {
@@ -96,9 +48,10 @@ class SpeedcontrolUtil {
 
   /**
    * Find run data array index of current run based on it's ID.
+   * Will return -1 if it cannot be found.
    * @param run Run data object, defaults to current run.
    */
-  findIndexInRunDataArray(run: RunData | undefined = this.getCurrentRun()): number {
+  findIndexInRunDataArray(run: RunData | null = this.getCurrentRun()): number {
     let indexOfRun = -1;
 
     // Completely skips this if the run variable isn't defined.
@@ -140,6 +93,31 @@ class SpeedcontrolUtil {
       namesList = namesArray.join(' vs. ');
     }
     return namesList;
+  }
+
+  /**
+   * Starts the nodecg-speedcontrol timer.
+   */
+  startTimer(): void {
+    // @ts-ignore: NodeCG not declaring this (yet).
+    this.nodecgContext.sendMessageToBundle('startTimer', sc);
+  }
+
+  /**
+   * Stops the nodecg-speedcontrol timer for the specified team, or the 1st team if none specified.
+   * @param teamID Team to stop the timer for; 1st team if none specified.
+   */
+  stopTimer(teamID: number = 0): void {
+    // @ts-ignore: NodeCG not declaring this (yet).
+    this.nodecgContext.sendMessageToBundle('stopTimer', sc, teamID);
+  }
+
+  /**
+   * Resets the nodecg-speedcontrol timer.
+   */
+  resetTimer(): void {
+    // @ts-ignore: NodeCG not declaring this (yet).
+    this.nodecgContext.sendMessageToBundle('resetTimer', sc);
   }
 }
 

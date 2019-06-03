@@ -25,11 +25,10 @@
     "build": "npx tsc -b tsconfig.json",
     "docs": "npx typedoc --theme markdown --out ./docs index.ts"
   },
-  "dependencies": {
-    "@types/node": "^11.13.7"
-  },
   "devDependencies": {
+    "@types/node": "^11.13.13",
     "nodecg": "^1.4.0",
+    "nodecg-speedcontrol": "github:speedcontrol/nodecg-speedcontrol#dev",
     "tslint": "^5.16.0",
     "tslint-config-airbnb": "^5.11.1",
     "typedoc": "^0.14.2",
