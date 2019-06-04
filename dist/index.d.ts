@@ -2,9 +2,9 @@ import { RunData, RunDataActiveRun, RunDataArray, Timer } from 'nodecg-speedcont
 import { NodeCG, Replicant } from 'nodecg/types/server';
 declare class SpeedcontrolUtil {
     private nodecgContext;
-    runDataArray: Replicant<RunDataArray>;
-    runDataActiveRun: Replicant<RunDataActiveRun>;
-    timer: Replicant<Timer>;
+    readonly runDataArray: Replicant<RunDataArray>;
+    readonly runDataActiveRun: Replicant<RunDataActiveRun>;
+    readonly timer: Replicant<Timer>;
     constructor(nodecg: NodeCG);
     /**
      * Returns the currently active run data object.

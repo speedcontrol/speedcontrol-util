@@ -4,9 +4,9 @@ const sc = 'nodecg-speedcontrol';
 
 class SpeedcontrolUtil {
   private nodecgContext: NodeCG;
-  runDataArray: Replicant<RunDataArray>;
-  runDataActiveRun: Replicant<RunDataActiveRun>;
-  timer: Replicant<Timer>;
+  readonly runDataArray: Replicant<RunDataArray>;
+  readonly runDataActiveRun: Replicant<RunDataActiveRun>;
+  readonly timer: Replicant<Timer>;
 
   constructor(nodecg: NodeCG) {
     this.nodecgContext = nodecg;
