@@ -1,3 +1,4 @@
+import { TimerChangesDisabled } from 'nodecg-speedcontrol/schemas';
 import { RunData, RunDataActiveRun, RunDataArray, Timer } from 'nodecg-speedcontrol/types';
 import { NodeCG, Replicant } from 'nodecg/types/server';
 const sc = 'nodecg-speedcontrol';
@@ -7,12 +8,14 @@ class SpeedcontrolUtil {
   readonly runDataArray: Replicant<RunDataArray>;
   readonly runDataActiveRun: Replicant<RunDataActiveRun>;
   readonly timer: Replicant<Timer>;
+  timerChangesDisabled: Replicant<TimerChangesDisabled>;
 
   constructor(nodecg: NodeCG) {
     this.nodecgContext = nodecg;
     this.runDataArray = nodecg.Replicant<RunDataArray>('runDataArray', sc);
     this.runDataActiveRun = nodecg.Replicant<RunDataActiveRun>('runDataActiveRun', sc);
     this.timer = nodecg.Replicant<Timer>('timer', sc);
+    this.timerChangesDisabled = nodecg.Replicant<TimerChangesDisabled>('timerChangesDisabled', sc);
   }
 
   /**
@@ -118,6 +121,20 @@ class SpeedcontrolUtil {
   resetTimer(): void {
     // @ts-ignore: NodeCG not declaring this (yet).
     this.nodecgContext.sendMessageToBundle('resetTimer', sc);
+  }
+
+  /**
+   * Prevent the nodecg-speedcontrol timer from being changed.
+   */
+  disableTimerChanges(): void {
+    this.timerChangesDisabled.value = true;
+  }
+
+  /**
+   * Allow the nodecg-speedcontrol timer to be changed.
+   */
+  enableTimerChanges(): void {
+    this.timerChangesDisabled.value = false;
   }
 }
 
