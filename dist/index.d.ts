@@ -1,3 +1,4 @@
+import { TimerChangesDisabled } from 'nodecg-speedcontrol/schemas';
 import { RunData, RunDataActiveRun, RunDataArray, Timer } from 'nodecg-speedcontrol/types';
 import { NodeCG, Replicant } from 'nodecg/types/server';
 declare class SpeedcontrolUtil {
@@ -5,6 +6,7 @@ declare class SpeedcontrolUtil {
     readonly runDataArray: Replicant<RunDataArray>;
     readonly runDataActiveRun: Replicant<RunDataActiveRun>;
     readonly timer: Replicant<Timer>;
+    timerChangesDisabled: Replicant<TimerChangesDisabled>;
     constructor(nodecg: NodeCG);
     /**
      * Returns the currently active run data object.
@@ -49,5 +51,13 @@ declare class SpeedcontrolUtil {
      * Resets the nodecg-speedcontrol timer.
      */
     resetTimer(): void;
+    /**
+     * Prevent the nodecg-speedcontrol timer from being changed.
+     */
+    disableTimerChanges(): void;
+    /**
+     * Allow the nodecg-speedcontrol timer to be changed.
+     */
+    enableTimerChanges(): void;
 }
 export = SpeedcontrolUtil;

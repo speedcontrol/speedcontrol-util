@@ -6,6 +6,7 @@ var SpeedcontrolUtil = /** @class */ (function () {
         this.runDataArray = nodecg.Replicant('runDataArray', sc);
         this.runDataActiveRun = nodecg.Replicant('runDataActiveRun', sc);
         this.timer = nodecg.Replicant('timer', sc);
+        this.timerChangesDisabled = nodecg.Replicant('timerChangesDisabled', sc);
     }
     /**
      * Returns the currently active run data object.
@@ -104,6 +105,18 @@ var SpeedcontrolUtil = /** @class */ (function () {
     SpeedcontrolUtil.prototype.resetTimer = function () {
         // @ts-ignore: NodeCG not declaring this (yet).
         this.nodecgContext.sendMessageToBundle('resetTimer', sc);
+    };
+    /**
+     * Prevent the nodecg-speedcontrol timer from being changed.
+     */
+    SpeedcontrolUtil.prototype.disableTimerChanges = function () {
+        this.timerChangesDisabled.value = true;
+    };
+    /**
+     * Allow the nodecg-speedcontrol timer to be changed.
+     */
+    SpeedcontrolUtil.prototype.enableTimerChanges = function () {
+        this.timerChangesDisabled.value = false;
     };
     return SpeedcontrolUtil;
 }());
