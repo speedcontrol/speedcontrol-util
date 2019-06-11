@@ -53,6 +53,12 @@ var SpeedcontrolUtil = /** @class */ (function (_super) {
                 return;
             }
             opQ.forEach(function (operation) {
+                // If timer is paused/stopped and the time changes, it was edited somehow.
+                if (['paused', 'stopped'].includes(newState) && operation.path === '/'
+                    // @ts-ignore: args not properly defined in typings.
+                    && operation.method === 'update' && operation.args.prop === 'milliseconds') {
+                    _this.emit('timerEdited');
+                }
                 // When teams finish/undo their finish.
                 if (operation.path === '/teamFinishTimes') {
                     // @ts-ignore: args not properly defined in typings.

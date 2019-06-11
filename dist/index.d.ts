@@ -9,6 +9,7 @@ interface SpeedcontrolUtil {
     on(event: 'timerPaused', listener: () => void): this;
     on(event: 'timerFinished', listener: () => void): this;
     on(event: 'timerReset', listener: () => void): this;
+    on(event: 'timerEdited', listener: () => void): this;
     on(event: 'timerTeamFinished', listener: (id: number) => void): this;
     on(event: 'timerTeamUndidFinish', listener: (id: number) => void): this;
     on(event: string, listener: Function): this;

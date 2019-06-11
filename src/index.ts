@@ -10,6 +10,7 @@ interface SpeedcontrolUtil {
   on(event: 'timerPaused', listener: () => void): this;
   on(event: 'timerFinished', listener: () => void): this;
   on(event: 'timerReset', listener: () => void): this;
+  on(event: 'timerEdited', listener: () => void): this;
   on(event: 'timerTeamFinished', listener: (id: number) => void): this;
   on(event: 'timerTeamUndidFinish', listener: (id: number) => void): this;
 
@@ -58,6 +59,12 @@ class SpeedcontrolUtil extends EventEmitter {
         return;
       }
       opQ.forEach((operation) => {
+        // If timer is paused/stopped and the time changes, it was edited somehow.
+        if (['paused', 'stopped'].includes(newState) && operation.path === '/'
+        // @ts-ignore: args not properly defined in typings.
+        && operation.method === 'update' && operation.args.prop === 'milliseconds') {
+          this.emit('timerEdited');
+        }
         // When teams finish/undo their finish.
         if (operation.path === '/teamFinishTimes') {
           // @ts-ignore: args not properly defined in typings.
