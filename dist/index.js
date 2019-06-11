@@ -1,12 +1,72 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var events_1 = require("events");
 var sc = 'nodecg-speedcontrol';
-var SpeedcontrolUtil = /** @class */ (function () {
+var SpeedcontrolUtil = /** @class */ (function (_super) {
+    __extends(SpeedcontrolUtil, _super);
     function SpeedcontrolUtil(nodecg) {
-        this.nodecgContext = nodecg;
-        this.runDataArray = nodecg.Replicant('runDataArray', sc);
-        this.runDataActiveRun = nodecg.Replicant('runDataActiveRun', sc);
-        this.timer = nodecg.Replicant('timer', sc);
-        this.timerChangesDisabled = nodecg.Replicant('timerChangesDisabled', sc);
+        var _this = _super.call(this) || this;
+        _this.nodecgContext = nodecg;
+        _this.runDataArray = nodecg.Replicant('runDataArray', sc);
+        _this.runDataActiveRun = nodecg.Replicant('runDataActiveRun', sc);
+        _this.timer = nodecg.Replicant('timer', sc);
+        _this.timerChangesDisabled = nodecg.Replicant('timerChangesDisabled', sc);
+        // Emit events when the timer state changes.
+        _this.timer.on('change', function (newVal, oldVal, opQ) {
+            if (!oldVal) {
+                return;
+            }
+            var oldState = oldVal.state;
+            var newState = newVal.state;
+            if (oldState !== newState) {
+                if (newState === 'running') {
+                    if (oldState === 'paused') {
+                        _this.emit('timerResumed');
+                    }
+                    else if (oldState === 'stopped') {
+                        _this.emit('timerStarted');
+                    }
+                }
+                else if (newState === 'finished') {
+                    _this.emit('timerFinished');
+                }
+                else if (newState === 'paused') {
+                    _this.emit('timerPaused');
+                }
+                else if (newState === 'stopped') {
+                    _this.emit('timerReset');
+                }
+            }
+            if (!opQ) {
+                return;
+            }
+            opQ.forEach(function (operation) {
+                // When teams finish/undo their finish.
+                if (operation.path === '/teamFinishTimes') {
+                    // @ts-ignore: args not properly defined in typings.
+                    var teamID = Number(operation.args.prop);
+                    if (operation.method === 'add') { // Team finished.
+                        _this.emit('timerTeamFinished', teamID);
+                    }
+                    else if (operation.method === 'delete') { // Team undo finish.
+                        _this.emit('timerTeamUndidFinish', teamID);
+                    }
+                }
+            });
+        });
+        return _this;
     }
     /**
      * Returns the currently active run data object.
@@ -119,6 +179,6 @@ var SpeedcontrolUtil = /** @class */ (function () {
         this.timerChangesDisabled.value = false;
     };
     return SpeedcontrolUtil;
-}());
+}(events_1.EventEmitter));
 module.exports = SpeedcontrolUtil;
 //# sourceMappingURL=index.js.map

@@ -1,7 +1,17 @@
+/// <reference types="node" />
+import { EventEmitter } from 'events';
 import { TimerChangesDisabled } from 'nodecg-speedcontrol/schemas';
 import { RunData, RunDataActiveRun, RunDataArray, Timer } from 'nodecg-speedcontrol/types';
 import { NodeCG, Replicant } from 'nodecg/types/server';
-declare class SpeedcontrolUtil {
+interface SpeedcontrolUtil {
+    on(event: 'timerStarted', listener: () => void): this;
+    on(event: 'timerResumed', listener: () => void): this;
+    on(event: 'timerPaused', listener: () => void): this;
+    on(event: 'timerFinished', listener: () => void): this;
+    on(event: 'timerReset', listener: () => void): this;
+    on(event: string, listener: Function): this;
+}
+declare class SpeedcontrolUtil extends EventEmitter {
     private nodecgContext;
     readonly runDataArray: Replicant<RunDataArray>;
     readonly runDataActiveRun: Replicant<RunDataActiveRun>;

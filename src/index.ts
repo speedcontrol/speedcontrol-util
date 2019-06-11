@@ -1,9 +1,20 @@
+import { EventEmitter } from 'events';
 import { TimerChangesDisabled } from 'nodecg-speedcontrol/schemas';
 import { RunData, RunDataActiveRun, RunDataArray, Timer } from 'nodecg-speedcontrol/types';
 import { NodeCG, Replicant } from 'nodecg/types/server';
 const sc = 'nodecg-speedcontrol';
 
-class SpeedcontrolUtil {
+interface SpeedcontrolUtil {
+  on(event: 'timerStarted', listener: () => void): this;
+  on(event: 'timerResumed', listener: () => void): this;
+  on(event: 'timerPaused', listener: () => void): this;
+  on(event: 'timerFinished', listener: () => void): this;
+  on(event: 'timerReset', listener: () => void): this;
+
+  on(event: string, listener: Function): this;
+}
+
+class SpeedcontrolUtil extends EventEmitter {
   private nodecgContext: NodeCG;
   readonly runDataArray: Replicant<RunDataArray>;
   readonly runDataActiveRun: Replicant<RunDataActiveRun>;
@@ -11,11 +22,52 @@ class SpeedcontrolUtil {
   timerChangesDisabled: Replicant<TimerChangesDisabled>;
 
   constructor(nodecg: NodeCG) {
+    super();
     this.nodecgContext = nodecg;
     this.runDataArray = nodecg.Replicant<RunDataArray>('runDataArray', sc);
     this.runDataActiveRun = nodecg.Replicant<RunDataActiveRun>('runDataActiveRun', sc);
     this.timer = nodecg.Replicant<Timer>('timer', sc);
     this.timerChangesDisabled = nodecg.Replicant<TimerChangesDisabled>('timerChangesDisabled', sc);
+
+    // Emit events when the timer state changes.
+    this.timer.on('change', (newVal, oldVal, opQ) => {
+      if (!oldVal) {
+        return;
+      }
+      const oldState = oldVal.state;
+      const newState = newVal.state;
+      if (oldState !== newState) {
+        if (newState === 'running') {
+          if (oldState === 'paused') {
+            this.emit('timerResumed');
+          } else if (oldState === 'stopped') {
+            this.emit('timerStarted');
+          }
+        } else if (newState === 'finished') {
+          this.emit('timerFinished');
+        } else if (newState === 'paused') {
+          this.emit('timerPaused');
+        } else if (newState === 'stopped') {
+          this.emit('timerReset');
+        }
+      }
+
+      if (!opQ) {
+        return;
+      }
+      opQ.forEach((operation) => {
+        // When teams finish/undo their finish.
+        if (operation.path === '/teamFinishTimes') {
+          // @ts-ignore: args not properly defined in typings.
+          const teamID = Number(operation.args.prop);
+          if (operation.method === 'add') { // Team finished.
+            this.emit('timerTeamFinished', teamID);
+          } else if (operation.method === 'delete') { // Team undo finish.
+            this.emit('timerTeamUndidFinish', teamID);
+          }
+        }
+      });
+    });
   }
 
   /**
