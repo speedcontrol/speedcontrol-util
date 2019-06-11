@@ -60,9 +60,11 @@ class SpeedcontrolUtil extends EventEmitter {
       }
       opQ.forEach((operation) => {
         // If timer is paused/stopped and the time changes, it was edited somehow.
-        if (['paused', 'stopped'].includes(newState) && operation.path === '/'
+        const validEditStates = ['paused', 'stopped'];
+        if (validEditStates.includes(newState) && oldState === newState
+        && operation.path === '/' && operation.method === 'update'
         // @ts-ignore: args not properly defined in typings.
-        && operation.method === 'update' && operation.args.prop === 'milliseconds') {
+        && operation.args.prop === 'milliseconds') {
           this.emit('timerEdited');
         }
         // When teams finish/undo their finish.
