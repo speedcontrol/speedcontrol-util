@@ -1,7 +1,10 @@
 import { EventEmitter } from 'events';
 import { TimerChangesDisabled } from 'nodecg-speedcontrol/schemas';
 import { RunData, RunDataActiveRun, RunDataArray, Timer } from 'nodecg-speedcontrol/types';
-import { NodeCG, Replicant } from 'nodecg/types/server';
+import { NodeCG } from 'nodecg/types/lib/nodecg-instance';
+import { NodeCGStatic } from 'nodecg/types/lib/nodecg-static';
+import { Platform } from 'nodecg/types/lib/platform';
+import { Replicant } from 'nodecg/types/lib/replicant';
 const sc = 'nodecg-speedcontrol';
 
 interface SpeedcontrolUtil {
@@ -18,13 +21,13 @@ interface SpeedcontrolUtil {
 }
 
 class SpeedcontrolUtil extends EventEmitter {
-  private nodecgContext: NodeCG;
-  readonly runDataArray: Replicant<RunDataArray>;
-  readonly runDataActiveRun: Replicant<RunDataActiveRun>;
-  readonly timer: Replicant<Timer>;
-  timerChangesDisabled: Replicant<TimerChangesDisabled>;
+  private nodecgContext: NodeCG<Platform>;
+  readonly runDataArray: Replicant<RunDataArray, Platform>;
+  readonly runDataActiveRun: Replicant<RunDataActiveRun, Platform>;
+  readonly timer: Replicant<Timer, Platform>;
+  timerChangesDisabled: Replicant<TimerChangesDisabled, Platform>;
 
-  constructor(nodecg: NodeCG) {
+  constructor(nodecg: NodeCG<Platform>, nodecgStatic?: NodeCGStatic<Platform>) {
     super();
     this.nodecgContext = nodecg;
     this.runDataArray = nodecg.Replicant<RunDataArray>('runDataArray', sc);
@@ -81,18 +84,45 @@ class SpeedcontrolUtil extends EventEmitter {
     });
   }
 
+  waitForReplicants(nodecgStatic: NodeCGStatic<Platform>): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (nodecgStatic.waitForReplicants) {
+        nodecgStatic.waitForReplicants(
+          this.runDataArray,
+          this.runDataActiveRun,
+          this.timer,
+          this.timerChangesDisabled,
+        ).then(() => {
+          resolve();
+        }).catch((err) => {
+          reject();
+        });
+      } else {
+        reject();
+      }
+    });
+  }
+
   /**
    * Returns the currently active run data object.
    */
   getCurrentRun(): RunDataActiveRun {
-    return this.runDataActiveRun.value;
+    let run: RunDataActiveRun = null;
+    if (this.runDataActiveRun.value !== undefined) {
+      run = this.runDataActiveRun.value;
+    }
+    return run;
   }
 
   /**
    * Returns the array of runs.
    */
   getRunDataArray(): RunDataArray {
-    return this.runDataArray.value;
+    let array: RunDataArray = [];
+    if (this.runDataArray.value !== undefined) {
+      array = this.runDataArray.value;
+    }
+    return array;
   }
 
   /**
