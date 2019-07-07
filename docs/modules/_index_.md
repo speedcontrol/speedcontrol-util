@@ -8,13 +8,21 @@
 
 * [SpeedcontrolUtil](../classes/_index_.speedcontrolutil.md)
 
-### Interfaces
+### Variables
 
-* [RunData](../interfaces/_index_.rundata.md)
-* [RunDataPlayer](../interfaces/_index_.rundataplayer.md)
-* [RunDataTeams](../interfaces/_index_.rundatateams.md)
-* [Timer](../interfaces/_index_.timer.md)
-* [TimerBasic](../interfaces/_index_.timerbasic.md)
+* [sc](_index_.md#sc)
 
 ---
+
+## Variables
+
+<a id="sc"></a>
+
+### `<Const>` sc
+
+**● sc**: *"nodecg-speedcontrol"* = "nodecg-speedcontrol"
+
+*Defined in [index.ts:5](https://github.com/speedcontrol/speedcontrol-util/blob/50ea470/src/index.ts#L5)*
+
+___
 

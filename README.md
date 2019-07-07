@@ -1,5 +1,7 @@
 # speedcontrol-util
 
+*Currently developed around the `dev` branch of `nodecg-speedcontrol`, use it at your own risk!*
+
 Node.js package with utilities to help you code NodeCG bundles that interface with the nodecg-speedcontrol bundle.
 
 ## Install

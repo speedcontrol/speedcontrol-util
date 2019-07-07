@@ -1,6 +1,6 @@
 {
   "name": "speedcontrol-util",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Node.js package with utilities to help you code NodeCG bundles that interface with the nodecg-speedcontrol bundle.",
   "keywords": [
     "helper",
@@ -23,7 +23,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "npx tsc -b tsconfig.json",
-    "docs": "npx typedoc --theme markdown --out ./docs index.ts"
+    "docs": "npx typedoc --theme markdown --out ./docs ./src/index.ts"
   },
   "dependencies": {
     "nodecg": "^1.4.0",
