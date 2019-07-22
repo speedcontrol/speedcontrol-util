@@ -1,8 +1,8 @@
+import clone from 'clone';
 import { EventEmitter } from 'events';
 import { TimerChangesDisabled } from 'nodecg-speedcontrol/schemas';
 import { RunData, RunDataActiveRun, RunDataArray, Timer } from 'nodecg-speedcontrol/types';
 import { NodeCG, Replicant } from 'nodecg/types/server';
-import clone from 'clone';
 const sc = 'nodecg-speedcontrol';
 
 interface SpeedcontrolUtil {
@@ -108,7 +108,7 @@ class SpeedcontrolUtil extends EventEmitter {
       if (!this.getRunDataArray()[indexOfCurrentRun + i]) {
         break;
       }
-      nextRuns.push(this.getRunDataArray()[indexOfCurrentRun + i]);
+      nextRuns.push(clone(this.getRunDataArray()[indexOfCurrentRun + i]));
     }
     return nextRuns;
   }
