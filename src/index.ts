@@ -2,6 +2,7 @@ import { EventEmitter } from 'events';
 import { TimerChangesDisabled } from 'nodecg-speedcontrol/schemas';
 import { RunData, RunDataActiveRun, RunDataArray, Timer } from 'nodecg-speedcontrol/types';
 import { NodeCG, Replicant } from 'nodecg/types/server';
+import clone from 'clone';
 const sc = 'nodecg-speedcontrol';
 
 interface SpeedcontrolUtil {
@@ -85,14 +86,14 @@ class SpeedcontrolUtil extends EventEmitter {
    * Returns the currently active run data object.
    */
   getCurrentRun(): RunDataActiveRun {
-    return this.runDataActiveRun.value;
+    return clone(this.runDataActiveRun.value);
   }
 
   /**
    * Returns the array of runs.
    */
   getRunDataArray(): RunDataArray {
-    return this.runDataArray.value;
+    return clone(this.runDataArray.value);
   }
 
   /**
@@ -139,7 +140,7 @@ class SpeedcontrolUtil extends EventEmitter {
    */
   checkForTotalPlayers(run: RunData): number {
     let amount = 0;
-    run.teams.forEach(team => team.players.forEach(() => amount = amount + 1));
+    run.teams.forEach(team => team.players.forEach(() => amount += 1));
     return amount;
   }
 

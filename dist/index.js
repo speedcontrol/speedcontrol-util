@@ -12,7 +12,11 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 var events_1 = require("events");
+var clone_1 = __importDefault(require("clone"));
 var sc = 'nodecg-speedcontrol';
 var SpeedcontrolUtil = /** @class */ (function (_super) {
     __extends(SpeedcontrolUtil, _super);
@@ -80,13 +84,13 @@ var SpeedcontrolUtil = /** @class */ (function (_super) {
      * Returns the currently active run data object.
      */
     SpeedcontrolUtil.prototype.getCurrentRun = function () {
-        return this.runDataActiveRun.value;
+        return clone_1.default(this.runDataActiveRun.value);
     };
     /**
      * Returns the array of runs.
      */
     SpeedcontrolUtil.prototype.getRunDataArray = function () {
-        return this.runDataArray.value;
+        return clone_1.default(this.runDataArray.value);
     };
     /**
      * Gets the next X runs in the schedule after the supplied run.
@@ -131,7 +135,7 @@ var SpeedcontrolUtil = /** @class */ (function (_super) {
      */
     SpeedcontrolUtil.prototype.checkForTotalPlayers = function (run) {
         var amount = 0;
-        run.teams.forEach(function (team) { return team.players.forEach(function () { return amount = amount + 1; }); });
+        run.teams.forEach(function (team) { return team.players.forEach(function () { return amount += 1; }); });
         return amount;
     };
     /**
