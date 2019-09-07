@@ -20,10 +20,10 @@ var events_1 = require("events");
 var sc = 'nodecg-speedcontrol';
 var SpeedcontrolUtil = /** @class */ (function (_super) {
     __extends(SpeedcontrolUtil, _super);
-    /* eslint-enable */
+    /* eslint-enable lines-between-class-members */
     function SpeedcontrolUtil(nodecg) {
         var _this = _super.call(this) || this;
-        _this.nodecgContext = nodecg;
+        _this.nodecg = nodecg;
         _this.runDataArray = nodecg.Replicant('runDataArray', sc);
         _this.runDataActiveRun = nodecg.Replicant('runDataActiveRun', sc);
         _this.timer = nodecg.Replicant('timer', sc);
@@ -45,7 +45,7 @@ var SpeedcontrolUtil = /** @class */ (function (_super) {
                     }
                 }
                 else if (newState === 'finished') {
-                    _this.emit('timerFinished');
+                    _this.emit('timerStopped');
                 }
                 else if (newState === 'paused') {
                     _this.emit('timerPaused');
@@ -59,22 +59,21 @@ var SpeedcontrolUtil = /** @class */ (function (_super) {
             }
             opQ.forEach(function (operation) {
                 // If timer is paused/stopped and the time changes, it was edited somehow.
-                var validEditStates = ['paused', 'stopped'];
-                if (validEditStates.includes(newState) && oldState === newState
+                if (['paused', 'stopped'].includes(newState) && oldState === newState
                     && operation.path === '/' && operation.method === 'update'
                     // @ts-ignore: args not properly defined in typings.
                     && operation.args.prop === 'milliseconds') {
                     _this.emit('timerEdited');
                 }
-                // When teams finish/undo their finish.
+                // When teams stop/undo.
                 if (operation.path === '/teamFinishTimes') {
                     // @ts-ignore: args not properly defined in typings.
-                    var teamID = Number(operation.args.prop);
-                    if (operation.method === 'add') { // Team finished.
-                        _this.emit('timerTeamFinished', teamID);
+                    var teamID = operation.args.prop;
+                    if (operation.method === 'add') {
+                        _this.emit('timerTeamStopped', teamID);
                     }
-                    else if (operation.method === 'delete') { // Team undo finish.
-                        _this.emit('timerTeamUndidFinish', teamID);
+                    else if (operation.method === 'delete') {
+                        _this.emit('timerTeamStopUndone', teamID);
                     }
                 }
             });
@@ -93,6 +92,7 @@ var SpeedcontrolUtil = /** @class */ (function (_super) {
     SpeedcontrolUtil.prototype.getRunDataArray = function () {
         return clone_1.default(this.runDataArray.value);
     };
+    // TBD: REDO BASED ON NEW SPEEDCONTROL LOGIC
     /**
      * Gets the next X runs in the schedule after the supplied run.
      * @param amount Maximum amount of runs to return, defaults to 4.
@@ -118,17 +118,11 @@ var SpeedcontrolUtil = /** @class */ (function (_super) {
      */
     SpeedcontrolUtil.prototype.findIndexInRunDataArray = function (run) {
         if (run === void 0) { run = this.getCurrentRun(); }
-        var indexOfRun = -1;
         // Completely skips this if the run variable isn't defined.
-        if (run) {
-            for (var i = 0; i < this.getRunDataArray().length; i += 1) {
-                if (run.id === this.getRunDataArray()[i].id) {
-                    indexOfRun = i;
-                    break;
-                }
-            }
+        if (!run) {
+            return -1;
         }
-        return indexOfRun;
+        return this.getRunDataArray().findIndex(function (arrRun) { return run.id === arrRun.id; });
     };
     /**
      * Gets the total amount of players in a specified run.
@@ -141,41 +135,31 @@ var SpeedcontrolUtil = /** @class */ (function (_super) {
      * Goes through each team and players and makes a string to show the names correctly together.
      * @param run Run data object.
      */
-    SpeedcontrolUtil.formPlayerNamesString = function (run) {
-        var namesArray = [];
-        var namesList = 'No Player(s)';
-        run.teams.forEach(function (team) {
-            var teamPlayerArray = [];
-            team.players.forEach(function (player) { return teamPlayerArray.push(player.name); });
-            namesArray.push(teamPlayerArray.join(', '));
-        });
-        if (namesList.length) {
-            namesList = namesArray.join(' vs. ');
-        }
-        return namesList;
+    SpeedcontrolUtil.formPlayerNamesStr = function (run) {
+        return run.teams.map(function (team) { return (team.players.map(function (player) { return player.name; }).join(', ')); }).join(' vs. ') || 'No Player(s)';
     };
+    // TBD: REDO BASED ON NEW SPEEDCONTROL LOGIC
     /**
      * Starts the nodecg-speedcontrol timer.
      */
     SpeedcontrolUtil.prototype.startTimer = function () {
-        // @ts-ignore: NodeCG not declaring this (yet).
-        this.nodecgContext.sendMessageToBundle('startTimer', sc);
+        this.nodecg.sendMessageToBundle('startTimer', sc);
     };
+    // TBD: REDO BASED ON NEW SPEEDCONTROL LOGIC
     /**
      * Stops the nodecg-speedcontrol timer for the specified team, or the 1st team if none specified.
      * @param teamID Team to stop the timer for; 1st team if none specified.
      */
     SpeedcontrolUtil.prototype.stopTimer = function (teamID) {
         if (teamID === void 0) { teamID = 0; }
-        // @ts-ignore: NodeCG not declaring this (yet).
-        this.nodecgContext.sendMessageToBundle('stopTimer', sc, teamID);
+        this.nodecg.sendMessageToBundle('stopTimer', sc, teamID);
     };
+    // TBD: REDO BASED ON NEW SPEEDCONTROL LOGIC
     /**
      * Resets the nodecg-speedcontrol timer.
      */
     SpeedcontrolUtil.prototype.resetTimer = function () {
-        // @ts-ignore: NodeCG not declaring this (yet).
-        this.nodecgContext.sendMessageToBundle('resetTimer', sc);
+        this.nodecg.sendMessageToBundle('resetTimer', sc);
     };
     /**
      * Prevent the nodecg-speedcontrol timer from being changed.

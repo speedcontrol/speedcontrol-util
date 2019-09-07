@@ -7,15 +7,15 @@ interface SpeedcontrolUtil {
     on(event: 'timerStarted', listener: () => void): this;
     on(event: 'timerResumed', listener: () => void): this;
     on(event: 'timerPaused', listener: () => void): this;
-    on(event: 'timerFinished', listener: () => void): this;
+    on(event: 'timerStopped', listener: () => void): this;
     on(event: 'timerReset', listener: () => void): this;
     on(event: 'timerEdited', listener: () => void): this;
-    on(event: 'timerTeamFinished', listener: (id: number) => void): this;
-    on(event: 'timerTeamUndidFinish', listener: (id: number) => void): this;
+    on(event: 'timerTeamStopped', listener: (id: number) => void): this;
+    on(event: 'timerTeamStopUndone', listener: (id: number) => void): this;
     on(event: string, listener: Function): this;
 }
 declare class SpeedcontrolUtil extends EventEmitter {
-    private nodecgContext;
+    private nodecg;
     readonly runDataArray: Replicant<RunDataArray>;
     readonly runDataActiveRun: Replicant<RunDataActiveRun>;
     readonly timer: Replicant<Timer>;
@@ -50,7 +50,7 @@ declare class SpeedcontrolUtil extends EventEmitter {
      * Goes through each team and players and makes a string to show the names correctly together.
      * @param run Run data object.
      */
-    static formPlayerNamesString(run: RunData): string;
+    static formPlayerNamesStr(run: RunData): string;
     /**
      * Starts the nodecg-speedcontrol timer.
      */
