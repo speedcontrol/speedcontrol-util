@@ -1,7 +1,7 @@
 import clone from 'clone';
 import { EventEmitter } from 'events';
 import { RunDataActiveRunSurrounding, TimerChangesDisabled } from 'nodecg-speedcontrol/schemas';
-import { RunData, RunDataActiveRun, RunDataArray, Timer } from 'nodecg-speedcontrol/types'; // eslint-disable-line
+import { ExtensionReturn, RunData, RunDataActiveRun, RunDataArray, SendMessage, Timer } from 'nodecg-speedcontrol/types'; // eslint-disable-line
 import { NodeCG, Replicant } from 'nodecg/types/server';
 
 const sc = 'nodecg-speedcontrol';
@@ -26,6 +26,7 @@ class SpeedcontrolUtil extends EventEmitter {
   readonly runDataActiveRun: Replicant<RunDataActiveRun>;
   readonly runDataActiveRunSurrounding: Replicant<RunDataActiveRunSurrounding>
   readonly timer: Replicant<Timer>;
+  sendMessage: SendMessage;
   timerChangesDisabled: Replicant<TimerChangesDisabled>;
   /* eslint-enable lines-between-class-members */
 
@@ -37,6 +38,7 @@ class SpeedcontrolUtil extends EventEmitter {
     this.runDataActiveRunSurrounding = nodecg.Replicant('runDataActiveRunSurrounding', sc);
     this.timer = nodecg.Replicant('timer', sc);
     this.timerChangesDisabled = nodecg.Replicant('timerChangesDisabled', sc);
+    this.sendMessage = (nodecg.extensions[sc] as unknown as ExtensionReturn).sendMessage;
 
     // Emit events when the timer state changes.
     this.timer.on('change', (newVal, oldVal, opQ) => {
@@ -145,29 +147,34 @@ class SpeedcontrolUtil extends EventEmitter {
     )).join(' vs. ') || 'No Player(s)';
   }
 
-  // TBD: REDO BASED ON NEW SPEEDCONTROL LOGIC
   /**
    * Starts the nodecg-speedcontrol timer.
    */
   startTimer(): void {
-    this.nodecg.sendMessageToBundle('startTimer', sc);
+    this.sendMessage('timerStart').catch(() => {});
   }
 
-  // TBD: REDO BASED ON NEW SPEEDCONTROL LOGIC
   /**
    * Stops the nodecg-speedcontrol timer for the specified team, or the 1st team if none specified.
-   * @param teamID Team to stop the timer for; 1st team if none specified.
+   * @param teamIndex Index of team to stop the timer for; 1st team if none specified.
    */
-  stopTimer(teamID = 0): void {
-    this.nodecg.sendMessageToBundle('stopTimer', sc, teamID);
+  stopTimer(teamIndex = 0): void {
+    const run = this.getCurrentRun();
+    let uuid;
+    if (run && run.teams[teamIndex]) {
+      uuid = run.teams[teamIndex].id;
+    }
+    if (run && !uuid) {
+      return;
+    }
+    this.sendMessage('timerStop', uuid).catch(() => {});
   }
 
-  // TBD: REDO BASED ON NEW SPEEDCONTROL LOGIC
   /**
    * Resets the nodecg-speedcontrol timer.
    */
   resetTimer(): void {
-    this.nodecg.sendMessageToBundle('resetTimer', sc);
+    this.sendMessage('timerReset').catch(() => {});
   }
 
   /**
