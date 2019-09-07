@@ -26,6 +26,7 @@ var SpeedcontrolUtil = /** @class */ (function (_super) {
         _this.nodecg = nodecg;
         _this.runDataArray = nodecg.Replicant('runDataArray', sc);
         _this.runDataActiveRun = nodecg.Replicant('runDataActiveRun', sc);
+        _this.runDataActiveRunSurrounding = nodecg.Replicant('runDataActiveRunSurrounding', sc);
         _this.timer = nodecg.Replicant('timer', sc);
         _this.timerChangesDisabled = nodecg.Replicant('timerChangesDisabled', sc);
         // Emit events when the timer state changes.
@@ -92,43 +93,35 @@ var SpeedcontrolUtil = /** @class */ (function (_super) {
     SpeedcontrolUtil.prototype.getRunDataArray = function () {
         return clone_1.default(this.runDataArray.value);
     };
-    // TBD: REDO BASED ON NEW SPEEDCONTROL LOGIC
     /**
-     * Gets the next X runs in the schedule after the supplied run.
+     * Gets the next X runs in the schedule after the supplied run,
+     * or after the currently active run if possible.
      * @param amount Maximum amount of runs to return, defaults to 4.
-     * @param run Run data object, defaults to current run. Will grab from the start if not set.
+     * @param run Run data object, will return runs after this one if supplied.
      */
     SpeedcontrolUtil.prototype.getNextRuns = function (amount, run) {
         if (amount === void 0) { amount = 4; }
-        if (run === void 0) { run = this.getCurrentRun(); }
-        var nextRuns = [];
-        var indexOfCurrentRun = this.findIndexInRunDataArray(run);
-        for (var i = 1; i <= amount; i += 1) {
-            if (!this.getRunDataArray()[indexOfCurrentRun + i]) {
-                break;
-            }
-            nextRuns.push(clone_1.default(this.getRunDataArray()[indexOfCurrentRun + i]));
-        }
-        return nextRuns;
+        var runIndex = this.findRunIndex(run || this.runDataActiveRunSurrounding.value.next);
+        runIndex = (run) ? runIndex += 1 : runIndex;
+        return this.getRunDataArray().slice(runIndex, amount);
     };
     /**
-     * Find run data array index of current run based on it's ID.
+     * Attempt to find a run in the run data array from it's ID.
      * Will return -1 if it cannot be found.
-     * @param run Run data object, defaults to current run.
+     * @param arg Can either be a run data object or a unique ID string.
      */
-    SpeedcontrolUtil.prototype.findIndexInRunDataArray = function (run) {
-        if (run === void 0) { run = this.getCurrentRun(); }
-        // Completely skips this if the run variable isn't defined.
-        if (!run) {
-            return -1;
+    SpeedcontrolUtil.prototype.findRunIndex = function (arg) {
+        var runId = arg;
+        if (arg && typeof arg !== 'string') {
+            runId = arg.id;
         }
-        return this.getRunDataArray().findIndex(function (arrRun) { return run.id === arrRun.id; });
+        return this.getRunDataArray().findIndex(function (run) { return run.id === runId; });
     };
     /**
      * Gets the total amount of players in a specified run.
      * @param run Run data object.
      */
-    SpeedcontrolUtil.checkForTotalPlayers = function (run) {
+    SpeedcontrolUtil.getRunTotalPlayers = function (run) {
         return run.teams.reduce(function (acc, team) { return (acc + team.players.reduce(function (acc_) { return acc_ + 1; }, 0)); }, 0);
     };
     /**

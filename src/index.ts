@@ -1,6 +1,6 @@
 import clone from 'clone';
 import { EventEmitter } from 'events';
-import { TimerChangesDisabled } from 'nodecg-speedcontrol/schemas';
+import { RunDataActiveRunSurrounding, TimerChangesDisabled } from 'nodecg-speedcontrol/schemas';
 import { RunData, RunDataActiveRun, RunDataArray, Timer } from 'nodecg-speedcontrol/types'; // eslint-disable-line
 import { NodeCG, Replicant } from 'nodecg/types/server';
 
@@ -24,6 +24,7 @@ class SpeedcontrolUtil extends EventEmitter {
   private nodecg: NodeCG;
   readonly runDataArray: Replicant<RunDataArray>;
   readonly runDataActiveRun: Replicant<RunDataActiveRun>;
+  readonly runDataActiveRunSurrounding: Replicant<RunDataActiveRunSurrounding>
   readonly timer: Replicant<Timer>;
   timerChangesDisabled: Replicant<TimerChangesDisabled>;
   /* eslint-enable lines-between-class-members */
@@ -33,6 +34,7 @@ class SpeedcontrolUtil extends EventEmitter {
     this.nodecg = nodecg;
     this.runDataArray = nodecg.Replicant('runDataArray', sc);
     this.runDataActiveRun = nodecg.Replicant('runDataActiveRun', sc);
+    this.runDataActiveRunSurrounding = nodecg.Replicant('runDataActiveRunSurrounding', sc);
     this.timer = nodecg.Replicant('timer', sc);
     this.timerChangesDisabled = nodecg.Replicant('timerChangesDisabled', sc);
 
@@ -98,42 +100,36 @@ class SpeedcontrolUtil extends EventEmitter {
     return clone(this.runDataArray.value);
   }
 
-  // TBD: REDO BASED ON NEW SPEEDCONTROL LOGIC
   /**
-   * Gets the next X runs in the schedule after the supplied run.
+   * Gets the next X runs in the schedule after the supplied run,
+   * or after the currently active run if possible.
    * @param amount Maximum amount of runs to return, defaults to 4.
-   * @param run Run data object, defaults to current run. Will grab from the start if not set.
+   * @param run Run data object, will return runs after this one if supplied.
    */
-  getNextRuns(amount = 4, run: RunData | null = this.getCurrentRun()): RunData[] {
-    const nextRuns: RunData[] = [];
-    const indexOfCurrentRun = this.findIndexInRunDataArray(run);
-    for (let i = 1; i <= amount; i += 1) {
-      if (!this.getRunDataArray()[indexOfCurrentRun + i]) {
-        break;
-      }
-      nextRuns.push(clone(this.getRunDataArray()[indexOfCurrentRun + i]));
-    }
-    return nextRuns;
+  getNextRuns(amount = 4, run?: RunData | null): RunData[] {
+    let runIndex = this.findRunIndex(run || this.runDataActiveRunSurrounding.value.next);
+    runIndex = (run) ? runIndex += 1 : runIndex;
+    return this.getRunDataArray().slice(runIndex, amount);
   }
 
   /**
-   * Find run data array index of current run based on it's ID.
+   * Attempt to find a run in the run data array from it's ID.
    * Will return -1 if it cannot be found.
-   * @param run Run data object, defaults to current run.
+   * @param arg Can either be a run data object or a unique ID string.
    */
-  findIndexInRunDataArray(run: RunData | null = this.getCurrentRun()): number {
-    // Completely skips this if the run variable isn't defined.
-    if (!run) {
-      return -1;
+  findRunIndex(arg?: RunData | string | null): number {
+    let runId = arg as string;
+    if (arg && typeof arg !== 'string') {
+      runId = arg.id;
     }
-    return this.getRunDataArray().findIndex((arrRun) => run.id === arrRun.id);
+    return this.getRunDataArray().findIndex((run) => run.id === runId);
   }
 
   /**
    * Gets the total amount of players in a specified run.
    * @param run Run data object.
    */
-  static checkForTotalPlayers(run: RunData): number {
+  static getRunTotalPlayers(run: RunData): number {
     return run.teams.reduce((acc, team) => (
       acc + team.players.reduce((acc_) => acc_ + 1, 0)
     ), 0);
