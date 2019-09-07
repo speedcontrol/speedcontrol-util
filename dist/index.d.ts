@@ -1,7 +1,7 @@
 /// <reference types="node" />
 import { EventEmitter } from 'events';
 import { RunDataActiveRunSurrounding, TimerChangesDisabled } from 'nodecg-speedcontrol/schemas';
-import { RunData, RunDataActiveRun, RunDataArray, Timer } from 'nodecg-speedcontrol/types';
+import { RunData, RunDataActiveRun, RunDataArray, SendMessage, Timer } from 'nodecg-speedcontrol/types';
 import { NodeCG, Replicant } from 'nodecg/types/server';
 interface SpeedcontrolUtil {
     on(event: 'timerStarted', listener: () => void): this;
@@ -10,8 +10,8 @@ interface SpeedcontrolUtil {
     on(event: 'timerStopped', listener: () => void): this;
     on(event: 'timerReset', listener: () => void): this;
     on(event: 'timerEdited', listener: () => void): this;
-    on(event: 'timerTeamStopped', listener: (id: number) => void): this;
-    on(event: 'timerTeamStopUndone', listener: (id: number) => void): this;
+    on(event: 'timerTeamStopped', listener: (id: string) => void): this;
+    on(event: 'timerTeamStopUndone', listener: (id: string) => void): this;
     on(event: string, listener: Function): this;
 }
 declare class SpeedcontrolUtil extends EventEmitter {
@@ -20,6 +20,7 @@ declare class SpeedcontrolUtil extends EventEmitter {
     readonly runDataActiveRun: Replicant<RunDataActiveRun>;
     readonly runDataActiveRunSurrounding: Replicant<RunDataActiveRunSurrounding>;
     readonly timer: Replicant<Timer>;
+    sendMessage: SendMessage;
     timerChangesDisabled: Replicant<TimerChangesDisabled>;
     constructor(nodecg: NodeCG);
     /**
@@ -59,9 +60,9 @@ declare class SpeedcontrolUtil extends EventEmitter {
     startTimer(): void;
     /**
      * Stops the nodecg-speedcontrol timer for the specified team, or the 1st team if none specified.
-     * @param teamID Team to stop the timer for; 1st team if none specified.
+     * @param teamIndex Index of team to stop the timer for; 1st team if none specified.
      */
-    stopTimer(teamID?: number): void;
+    stopTimer(teamIndex?: number): void;
     /**
      * Resets the nodecg-speedcontrol timer.
      */

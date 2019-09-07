@@ -1,4 +1,6 @@
-[speedcontrol-util](../README.md) > ["index"](../modules/_index_.md)
+**[speedcontrol-util](../README.md)**
+
+[Globals](../globals.md) › ["index"](_index_.md)
 
 # External module: "index"
 
@@ -10,19 +12,12 @@
 
 ### Variables
 
-* [sc](_index_.md#sc)
-
----
+* [sc](_index_.md#const-sc)
 
 ## Variables
 
-<a id="sc"></a>
+### `Const` sc
 
-### `<Const>` sc
+• **sc**: *"nodecg-speedcontrol"* = "nodecg-speedcontrol"
 
-**● sc**: *"nodecg-speedcontrol"* = "nodecg-speedcontrol"
-
-*Defined in [index.ts:5](https://github.com/speedcontrol/speedcontrol-util/blob/50ea470/src/index.ts#L5)*
-
-___
-
+*Defined in [index.ts:7](https://github.com/speedcontrol/speedcontrol-util/blob/d21d312/src/index.ts#L7)*

@@ -29,6 +29,7 @@ var SpeedcontrolUtil = /** @class */ (function (_super) {
         _this.runDataActiveRunSurrounding = nodecg.Replicant('runDataActiveRunSurrounding', sc);
         _this.timer = nodecg.Replicant('timer', sc);
         _this.timerChangesDisabled = nodecg.Replicant('timerChangesDisabled', sc);
+        _this.sendMessage = nodecg.extensions[sc].sendMessage;
         // Emit events when the timer state changes.
         _this.timer.on('change', function (newVal, oldVal, opQ) {
             if (!oldVal) {
@@ -131,28 +132,33 @@ var SpeedcontrolUtil = /** @class */ (function (_super) {
     SpeedcontrolUtil.formPlayerNamesStr = function (run) {
         return run.teams.map(function (team) { return (team.players.map(function (player) { return player.name; }).join(', ')); }).join(' vs. ') || 'No Player(s)';
     };
-    // TBD: REDO BASED ON NEW SPEEDCONTROL LOGIC
     /**
      * Starts the nodecg-speedcontrol timer.
      */
     SpeedcontrolUtil.prototype.startTimer = function () {
-        this.nodecg.sendMessageToBundle('startTimer', sc);
+        this.sendMessage('timerStart').catch(function () { });
     };
-    // TBD: REDO BASED ON NEW SPEEDCONTROL LOGIC
     /**
      * Stops the nodecg-speedcontrol timer for the specified team, or the 1st team if none specified.
-     * @param teamID Team to stop the timer for; 1st team if none specified.
+     * @param teamIndex Index of team to stop the timer for; 1st team if none specified.
      */
-    SpeedcontrolUtil.prototype.stopTimer = function (teamID) {
-        if (teamID === void 0) { teamID = 0; }
-        this.nodecg.sendMessageToBundle('stopTimer', sc, teamID);
+    SpeedcontrolUtil.prototype.stopTimer = function (teamIndex) {
+        if (teamIndex === void 0) { teamIndex = 0; }
+        var run = this.getCurrentRun();
+        var uuid;
+        if (run && run.teams[teamIndex]) {
+            uuid = run.teams[teamIndex].id;
+        }
+        if (run && !uuid) {
+            return;
+        }
+        this.sendMessage('timerStop', uuid).catch(function () { });
     };
-    // TBD: REDO BASED ON NEW SPEEDCONTROL LOGIC
     /**
      * Resets the nodecg-speedcontrol timer.
      */
     SpeedcontrolUtil.prototype.resetTimer = function () {
-        this.nodecg.sendMessageToBundle('resetTimer', sc);
+        this.sendMessage('timerReset').catch(function () { });
     };
     /**
      * Prevent the nodecg-speedcontrol timer from being changed.
