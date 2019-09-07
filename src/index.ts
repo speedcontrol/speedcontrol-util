@@ -20,13 +20,13 @@ interface SpeedcontrolUtil {
 }
 
 class SpeedcontrolUtil extends EventEmitter {
-  /* eslint-disable */
+  /* eslint-disable lines-between-class-members */
   private nodecgContext: NodeCG;
   readonly runDataArray: Replicant<RunDataArray>;
   readonly runDataActiveRun: Replicant<RunDataActiveRun>;
   readonly timer: Replicant<Timer>;
   timerChangesDisabled: Replicant<TimerChangesDisabled>;
-  /* eslint-enable */
+  /* eslint-enable lines-between-class-members */
 
   constructor(nodecg: NodeCG) {
     super();
