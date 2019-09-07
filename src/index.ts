@@ -111,7 +111,7 @@ class SpeedcontrolUtil extends EventEmitter {
   getNextRuns(amount = 4, run?: RunData | null): RunData[] {
     let runIndex = this.findRunIndex(run || this.runDataActiveRunSurrounding.value.next);
     runIndex = (run) ? runIndex += 1 : runIndex;
-    return this.getRunDataArray().slice(runIndex, amount);
+    return this.getRunDataArray().slice(runIndex, runIndex + amount);
   }
 
   /**

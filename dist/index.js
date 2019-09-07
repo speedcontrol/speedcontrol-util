@@ -104,7 +104,7 @@ var SpeedcontrolUtil = /** @class */ (function (_super) {
         if (amount === void 0) { amount = 4; }
         var runIndex = this.findRunIndex(run || this.runDataActiveRunSurrounding.value.next);
         runIndex = (run) ? runIndex += 1 : runIndex;
-        return this.getRunDataArray().slice(runIndex, amount);
+        return this.getRunDataArray().slice(runIndex, runIndex + amount);
     };
     /**
      * Attempt to find a run in the run data array from it's ID.
