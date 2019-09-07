@@ -45,12 +45,12 @@ declare class SpeedcontrolUtil extends EventEmitter {
      * Gets the total amount of players in a specified run.
      * @param run Run data object.
      */
-    checkForTotalPlayers(run: RunData): number;
+    static checkForTotalPlayers(run: RunData): number;
     /**
      * Goes through each team and players and makes a string to show the names correctly together.
      * @param run Run data object.
      */
-    formPlayerNamesString(run: RunData): string;
+    static formPlayerNamesString(run: RunData): string;
     /**
      * Starts the nodecg-speedcontrol timer.
      */

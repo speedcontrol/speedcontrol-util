@@ -1,8 +1,9 @@
 import clone from 'clone';
 import { EventEmitter } from 'events';
 import { TimerChangesDisabled } from 'nodecg-speedcontrol/schemas';
-import { RunData, RunDataActiveRun, RunDataArray, Timer } from 'nodecg-speedcontrol/types';
+import { RunData, RunDataActiveRun, RunDataArray, Timer } from 'nodecg-speedcontrol/types'; // eslint-disable-line
 import { NodeCG, Replicant } from 'nodecg/types/server';
+
 const sc = 'nodecg-speedcontrol';
 
 interface SpeedcontrolUtil {
@@ -19,11 +20,13 @@ interface SpeedcontrolUtil {
 }
 
 class SpeedcontrolUtil extends EventEmitter {
+  /* eslint-disable */
   private nodecgContext: NodeCG;
   readonly runDataArray: Replicant<RunDataArray>;
   readonly runDataActiveRun: Replicant<RunDataActiveRun>;
   readonly timer: Replicant<Timer>;
   timerChangesDisabled: Replicant<TimerChangesDisabled>;
+  /* eslint-enable */
 
   constructor(nodecg: NodeCG) {
     super();
@@ -101,10 +104,10 @@ class SpeedcontrolUtil extends EventEmitter {
    * @param amount Maximum amount of runs to return, defaults to 4.
    * @param run Run data object, defaults to current run. Will grab from the start if not set.
    */
-  getNextRuns(amount: number = 4, run: RunData | null = this.getCurrentRun()): RunData[] {
+  getNextRuns(amount = 4, run: RunData | null = this.getCurrentRun()): RunData[] {
     const nextRuns: RunData[] = [];
     const indexOfCurrentRun = this.findIndexInRunDataArray(run);
-    for (let i = 1; i <= amount; i = i + 1) {
+    for (let i = 1; i <= amount; i += 1) {
       if (!this.getRunDataArray()[indexOfCurrentRun + i]) {
         break;
       }
@@ -123,7 +126,7 @@ class SpeedcontrolUtil extends EventEmitter {
 
     // Completely skips this if the run variable isn't defined.
     if (run) {
-      for (let i = 0; i < this.getRunDataArray().length; i = i + 1) {
+      for (let i = 0; i < this.getRunDataArray().length; i += 1) {
         if (run.id === this.getRunDataArray()[i].id) {
           indexOfRun = i;
           break;
@@ -138,22 +141,22 @@ class SpeedcontrolUtil extends EventEmitter {
    * Gets the total amount of players in a specified run.
    * @param run Run data object.
    */
-  checkForTotalPlayers(run: RunData): number {
-    let amount = 0;
-    run.teams.forEach(team => team.players.forEach(() => amount += 1));
-    return amount;
+  static checkForTotalPlayers(run: RunData): number {
+    return run.teams.reduce((acc, team) => (
+      acc + team.players.reduce((acc_) => acc_ + 1, 0)
+    ), 0);
   }
 
   /**
    * Goes through each team and players and makes a string to show the names correctly together.
    * @param run Run data object.
    */
-  formPlayerNamesString(run: RunData): string {
+  static formPlayerNamesString(run: RunData): string {
     const namesArray: string[] = [];
     let namesList = 'No Player(s)';
     run.teams.forEach((team) => {
       const teamPlayerArray: string[] = [];
-      team.players.forEach(player => teamPlayerArray.push(player.name));
+      team.players.forEach((player) => teamPlayerArray.push(player.name));
       namesArray.push(teamPlayerArray.join(', '));
     });
     if (namesList.length) {
@@ -174,7 +177,7 @@ class SpeedcontrolUtil extends EventEmitter {
    * Stops the nodecg-speedcontrol timer for the specified team, or the 1st team if none specified.
    * @param teamID Team to stop the timer for; 1st team if none specified.
    */
-  stopTimer(teamID: number = 0): void {
+  stopTimer(teamID = 0): void {
     // @ts-ignore: NodeCG not declaring this (yet).
     this.nodecgContext.sendMessageToBundle('stopTimer', sc, teamID);
   }

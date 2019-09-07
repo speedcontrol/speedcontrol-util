@@ -15,11 +15,12 @@ var __extends = (this && this.__extends) || (function () {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var events_1 = require("events");
 var clone_1 = __importDefault(require("clone"));
+var events_1 = require("events");
 var sc = 'nodecg-speedcontrol';
 var SpeedcontrolUtil = /** @class */ (function (_super) {
     __extends(SpeedcontrolUtil, _super);
+    /* eslint-enable */
     function SpeedcontrolUtil(nodecg) {
         var _this = _super.call(this) || this;
         _this.nodecgContext = nodecg;
@@ -102,11 +103,11 @@ var SpeedcontrolUtil = /** @class */ (function (_super) {
         if (run === void 0) { run = this.getCurrentRun(); }
         var nextRuns = [];
         var indexOfCurrentRun = this.findIndexInRunDataArray(run);
-        for (var i = 1; i <= amount; i = i + 1) {
+        for (var i = 1; i <= amount; i += 1) {
             if (!this.getRunDataArray()[indexOfCurrentRun + i]) {
                 break;
             }
-            nextRuns.push(this.getRunDataArray()[indexOfCurrentRun + i]);
+            nextRuns.push(clone_1.default(this.getRunDataArray()[indexOfCurrentRun + i]));
         }
         return nextRuns;
     };
@@ -120,7 +121,7 @@ var SpeedcontrolUtil = /** @class */ (function (_super) {
         var indexOfRun = -1;
         // Completely skips this if the run variable isn't defined.
         if (run) {
-            for (var i = 0; i < this.getRunDataArray().length; i = i + 1) {
+            for (var i = 0; i < this.getRunDataArray().length; i += 1) {
                 if (run.id === this.getRunDataArray()[i].id) {
                     indexOfRun = i;
                     break;
@@ -133,16 +134,14 @@ var SpeedcontrolUtil = /** @class */ (function (_super) {
      * Gets the total amount of players in a specified run.
      * @param run Run data object.
      */
-    SpeedcontrolUtil.prototype.checkForTotalPlayers = function (run) {
-        var amount = 0;
-        run.teams.forEach(function (team) { return team.players.forEach(function () { return amount += 1; }); });
-        return amount;
+    SpeedcontrolUtil.checkForTotalPlayers = function (run) {
+        return run.teams.reduce(function (acc, team) { return (acc + team.players.reduce(function (acc_) { return acc_ + 1; }, 0)); }, 0);
     };
     /**
      * Goes through each team and players and makes a string to show the names correctly together.
      * @param run Run data object.
      */
-    SpeedcontrolUtil.prototype.formPlayerNamesString = function (run) {
+    SpeedcontrolUtil.formPlayerNamesString = function (run) {
         var namesArray = [];
         var namesList = 'No Player(s)';
         run.teams.forEach(function (team) {

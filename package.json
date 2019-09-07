@@ -22,20 +22,24 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
+    "autofix": "npx eslint --fix --ext .ts src",
     "build": "npx tsc -b tsconfig.json",
     "docs": "npx typedoc --theme markdown --out ./docs ./src/index.ts"
   },
   "dependencies": {
     "clone": "^2.1.2",
-    "nodecg": "^1.4.1",
-    "nodecg-speedcontrol": "github:speedcontrol/nodecg-speedcontrol#dev"
+    "nodecg": "^1.5.0",
+    "nodecg-speedcontrol": "github:speedcontrol/nodecg-speedcontrol#next"
   },
   "devDependencies": {
     "@types/clone": "^0.1.30",
-    "tslint": "^5.18.0",
-    "tslint-config-airbnb": "^5.11.1",
-    "typedoc": "^0.14.2",
-    "typedoc-plugin-markdown": "^2.0.10",
-    "typescript": "^3.5.3"
+    "@typescript-eslint/eslint-plugin": "^2.1.0",
+    "@typescript-eslint/parser": "^2.1.0",
+    "eslint": "^6.3.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "typedoc": "^0.15.0",
+    "typedoc-plugin-markdown": "^2.1.10",
+    "typescript": "^3.6.2"
   }
 }
