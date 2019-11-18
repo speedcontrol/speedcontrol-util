@@ -1,7 +1,7 @@
 import clone from 'clone';
 import { EventEmitter } from 'events';
-import { RunDataActiveRunSurrounding, TimerChangesDisabled } from 'nodecg-speedcontrol/schemas';
-import { ExtensionReturn, RunData, RunDataActiveRun, RunDataArray, SendMessage, Timer } from 'nodecg-speedcontrol/types'; // eslint-disable-line
+import { RunDataActiveRunSurrounding, TimerChangesDisabled } from 'nodecg-speedcontrol/schemas'; // eslint-disable-line max-len
+import { ExtensionReturn, RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessage, SendMessageReturnMap, Timer } from 'nodecg-speedcontrol/types'; // eslint-disable-line object-curly-newline, max-len
 import { NodeCG, Replicant } from 'nodecg/types/server';
 
 const sc = 'nodecg-speedcontrol';
@@ -13,30 +13,28 @@ interface SpeedcontrolUtil {
   on(event: 'timerStopped', listener: () => void): this;
   on(event: 'timerReset', listener: () => void): this;
   on(event: 'timerEdited', listener: () => void): this;
-  on(event: 'timerTeamStopped', listener: (id: string) => void): this;
-  on(event: 'timerTeamStopUndone', listener: (id: string) => void): this;
+  on(event: 'timerTeamStopped', listener: (id: string, forfeit: boolean) => void): this;
+  on(event: 'timerTeamUndone', listener: (id: string, forfeit: boolean) => void): this;
 
   on(event: string, listener: Function): this;
 }
 
 class SpeedcontrolUtil extends EventEmitter {
-  /* eslint-disable lines-between-class-members */
-  private nodecg: NodeCG;
   readonly runDataArray: Replicant<RunDataArray>;
   readonly runDataActiveRun: Replicant<RunDataActiveRun>;
   readonly runDataActiveRunSurrounding: Replicant<RunDataActiveRunSurrounding>
   readonly timer: Replicant<Timer>;
-  sendMessage: SendMessage;
+  readonly runFinishTimes: Replicant<RunFinishTimes>
   timerChangesDisabled: Replicant<TimerChangesDisabled>;
-  /* eslint-enable lines-between-class-members */
+  sendMessage: SendMessage;
 
   constructor(nodecg: NodeCG) {
     super();
-    this.nodecg = nodecg;
     this.runDataArray = nodecg.Replicant('runDataArray', sc);
     this.runDataActiveRun = nodecg.Replicant('runDataActiveRun', sc);
     this.runDataActiveRunSurrounding = nodecg.Replicant('runDataActiveRunSurrounding', sc);
     this.timer = nodecg.Replicant('timer', sc);
+    this.runFinishTimes = nodecg.Replicant('runFinishTimes', sc);
     this.timerChangesDisabled = nodecg.Replicant('timerChangesDisabled', sc);
     this.sendMessage = (nodecg.extensions[sc] as unknown as ExtensionReturn).sendMessage;
 
@@ -78,10 +76,11 @@ class SpeedcontrolUtil extends EventEmitter {
         if (operation.path === '/teamFinishTimes') {
           // @ts-ignore: args not properly defined in typings.
           const teamID = operation.args.prop as string;
+          const time = newVal.teamFinishTimes[teamID];
           if (operation.method === 'add') {
-            this.emit('timerTeamStopped', teamID);
+            this.emit('timerTeamStopped', teamID, time.state === 'forfeit');
           } else if (operation.method === 'delete') {
-            this.emit('timerTeamStopUndone', teamID);
+            this.emit('timerTeamUndone', teamID);
           }
         }
       });
@@ -120,7 +119,7 @@ class SpeedcontrolUtil extends EventEmitter {
    * @param arg Can either be a run data object or a unique ID string.
    */
   findRunIndex(arg?: RunData | string | null): number {
-    let runId = arg as string;
+    let runId = arg;
     if (arg && typeof arg !== 'string') {
       runId = arg.id;
     }
@@ -129,52 +128,53 @@ class SpeedcontrolUtil extends EventEmitter {
 
   /**
    * Gets the total amount of players in a specified run.
-   * @param run Run data object.
+   * @param runData Run data object.
    */
-  static getRunTotalPlayers(run: RunData): number {
-    return run.teams.reduce((acc, team) => (
+  static getRunTotalPlayers(runData: RunData): number {
+    return runData.teams.reduce((acc, team) => (
       acc + team.players.reduce((acc_) => acc_ + 1, 0)
     ), 0);
   }
 
   /**
-   * Goes through each team and players and makes a string to show the names correctly together.
-   * @param run Run data object.
+   * Takes a run data object and returns a formed string of the player names.
+   * @param runData Run Data object.
    */
-  static formPlayerNamesStr(run: RunData): string {
-    return run.teams.map((team): string => (
-      team.players.map((player): string => player.name).join(', ')
-    )).join(' vs. ') || 'No Player(s)';
+  static formPlayerNamesStr(runData: RunData): string {
+    return runData.teams.map((team) => (
+      team.players.map((player) => player.name).join(', ')
+    )).join(' vs. ') || 'N/A';
   }
 
   /**
    * Starts the nodecg-speedcontrol timer.
    */
-  startTimer(): void {
-    this.sendMessage('timerStart').catch(() => {});
+  async startTimer(): Promise<void> {
+    await this.sendMessage('timerStart');
   }
 
   /**
-   * Stops the nodecg-speedcontrol timer for the specified team, or the 1st team if none specified.
-   * @param teamIndex Index of team to stop the timer for; 1st team if none specified.
+   * Stops the nodecg-speedcontrol timer for the specified team index,
+   * or the 1st team if none specified.
+   * @param teamIndex Index of team to stop the timer for, defaults to 1st (0).
    */
-  stopTimer(teamIndex = 0): void {
+  async stopTimer(teamIndex = 0): Promise<void> {
     const run = this.getCurrentRun();
     let uuid;
     if (run && run.teams[teamIndex]) {
       uuid = run.teams[teamIndex].id;
     }
     if (run && !uuid) {
-      return;
+      throw new Error(`Run is active but team with index ${teamIndex} unavailable`);
     }
-    this.sendMessage('timerStop', uuid).catch(() => {});
+    await this.sendMessage('timerStop', { id: uuid });
   }
 
   /**
    * Resets the nodecg-speedcontrol timer.
    */
-  resetTimer(): void {
-    this.sendMessage('timerReset').catch(() => {});
+  async resetTimer(): Promise<void> {
+    await this.sendMessage('timerReset');
   }
 
   /**
@@ -189,6 +189,13 @@ class SpeedcontrolUtil extends EventEmitter {
    */
   enableTimerChanges(): void {
     this.timerChangesDisabled.value = false;
+  }
+
+  /**
+   * Attempts to start a Twitch commercial on the set channel in the bundle.
+   */
+  async startTwitchCommercial(): Promise<SendMessageReturnMap['twitchStartCommercial']> {
+    return this.sendMessage('twitchStartCommercial');
   }
 }
 

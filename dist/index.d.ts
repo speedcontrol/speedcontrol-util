@@ -1,7 +1,7 @@
 /// <reference types="node" />
 import { EventEmitter } from 'events';
 import { RunDataActiveRunSurrounding, TimerChangesDisabled } from 'nodecg-speedcontrol/schemas';
-import { RunData, RunDataActiveRun, RunDataArray, SendMessage, Timer } from 'nodecg-speedcontrol/types';
+import { RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessage, SendMessageReturnMap, Timer } from 'nodecg-speedcontrol/types';
 import { NodeCG, Replicant } from 'nodecg/types/server';
 interface SpeedcontrolUtil {
     on(event: 'timerStarted', listener: () => void): this;
@@ -10,18 +10,18 @@ interface SpeedcontrolUtil {
     on(event: 'timerStopped', listener: () => void): this;
     on(event: 'timerReset', listener: () => void): this;
     on(event: 'timerEdited', listener: () => void): this;
-    on(event: 'timerTeamStopped', listener: (id: string) => void): this;
-    on(event: 'timerTeamStopUndone', listener: (id: string) => void): this;
+    on(event: 'timerTeamStopped', listener: (id: string, forfeit: boolean) => void): this;
+    on(event: 'timerTeamUndone', listener: (id: string, forfeit: boolean) => void): this;
     on(event: string, listener: Function): this;
 }
 declare class SpeedcontrolUtil extends EventEmitter {
-    private nodecg;
     readonly runDataArray: Replicant<RunDataArray>;
     readonly runDataActiveRun: Replicant<RunDataActiveRun>;
     readonly runDataActiveRunSurrounding: Replicant<RunDataActiveRunSurrounding>;
     readonly timer: Replicant<Timer>;
-    sendMessage: SendMessage;
+    readonly runFinishTimes: Replicant<RunFinishTimes>;
     timerChangesDisabled: Replicant<TimerChangesDisabled>;
+    sendMessage: SendMessage;
     constructor(nodecg: NodeCG);
     /**
      * Returns the currently active run data object.
@@ -46,27 +46,28 @@ declare class SpeedcontrolUtil extends EventEmitter {
     findRunIndex(arg?: RunData | string | null): number;
     /**
      * Gets the total amount of players in a specified run.
-     * @param run Run data object.
+     * @param runData Run data object.
      */
-    static getRunTotalPlayers(run: RunData): number;
+    static getRunTotalPlayers(runData: RunData): number;
     /**
-     * Goes through each team and players and makes a string to show the names correctly together.
-     * @param run Run data object.
+     * Takes a run data object and returns a formed string of the player names.
+     * @param runData Run Data object.
      */
-    static formPlayerNamesStr(run: RunData): string;
+    static formPlayerNamesStr(runData: RunData): string;
     /**
      * Starts the nodecg-speedcontrol timer.
      */
-    startTimer(): void;
+    startTimer(): Promise<void>;
     /**
-     * Stops the nodecg-speedcontrol timer for the specified team, or the 1st team if none specified.
-     * @param teamIndex Index of team to stop the timer for; 1st team if none specified.
+     * Stops the nodecg-speedcontrol timer for the specified team index,
+     * or the 1st team if none specified.
+     * @param teamIndex Index of team to stop the timer for, defaults to 1st (0).
      */
-    stopTimer(teamIndex?: number): void;
+    stopTimer(teamIndex?: number): Promise<void>;
     /**
      * Resets the nodecg-speedcontrol timer.
      */
-    resetTimer(): void;
+    resetTimer(): Promise<void>;
     /**
      * Prevent the nodecg-speedcontrol timer from being changed.
      */
@@ -75,5 +76,9 @@ declare class SpeedcontrolUtil extends EventEmitter {
      * Allow the nodecg-speedcontrol timer to be changed.
      */
     enableTimerChanges(): void;
+    /**
+     * Attempts to start a Twitch commercial on the set channel in the bundle.
+     */
+    startTwitchCommercial(): Promise<SendMessageReturnMap['twitchStartCommercial']>;
 }
 export = SpeedcontrolUtil;

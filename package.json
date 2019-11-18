@@ -4,6 +4,7 @@
   "description": "Node.js package with utilities to help you code NodeCG bundles that interface with the nodecg-speedcontrol bundle.",
   "keywords": [
     "helper",
+    "nodecg",
     "nodecg-speedcontrol",
     "speedcontrol",
     "util",
@@ -24,7 +25,8 @@
   "scripts": {
     "autofix": "npx eslint --fix --ext .ts src",
     "build": "npx tsc -b tsconfig.json",
-    "docs": "npx typedoc --theme markdown --out ./docs ./src/index.ts"
+    "docs": "npx typedoc --theme markdown --out ./docs ./src/index.ts",
+    "watch": "npx tsc -b tsconfig.json -w"
   },
   "dependencies": {
     "clone": "^2.1.2",
@@ -33,13 +35,13 @@
   },
   "devDependencies": {
     "@types/clone": "^0.1.30",
-    "@typescript-eslint/eslint-plugin": "^2.1.0",
-    "@typescript-eslint/parser": "^2.1.0",
-    "eslint": "^6.3.0",
+    "@typescript-eslint/eslint-plugin": "^2.7.0",
+    "@typescript-eslint/parser": "^2.7.0",
+    "eslint": "^6.6.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
-    "typedoc": "^0.15.0",
-    "typedoc-plugin-markdown": "^2.1.10",
-    "typescript": "^3.6.2"
+    "typedoc": "^0.15.2",
+    "typedoc-plugin-markdown": "^2.2.11",
+    "typescript": "^3.7.2"
   }
 }

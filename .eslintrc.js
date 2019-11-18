@@ -9,13 +9,14 @@ module.exports = {
   ],
   extends: [
     'airbnb-base',
+    'eslint:recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:import/errors',
-    'plugin:import/warnings',
     'plugin:import/typescript',
   ],
   rules: {
-    '@typescript-eslint/indent': ['error', 2],
+    'lines-between-class-members': 'off',
     '@typescript-eslint/ban-ts-ignore': 'off',
+    'max-len': ["error", { "code": 100 }],
   },
 };
