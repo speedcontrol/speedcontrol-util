@@ -1,28 +1,17 @@
-/// <reference types="node" />
-import { EventEmitter } from 'events';
 import { RunDataActiveRunSurrounding, TimerChangesDisabled } from 'nodecg-speedcontrol/schemas';
 import { RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessage, SendMessageReturnMap, Timer } from 'nodecg-speedcontrol/types';
-import { NodeCG, Replicant } from 'nodecg/types/server';
-interface SpeedcontrolUtil {
-    on(event: 'timerStarted', listener: () => void): this;
-    on(event: 'timerResumed', listener: () => void): this;
-    on(event: 'timerPaused', listener: () => void): this;
-    on(event: 'timerStopped', listener: () => void): this;
-    on(event: 'timerReset', listener: () => void): this;
-    on(event: 'timerEdited', listener: () => void): this;
-    on(event: 'timerTeamStopped', listener: (id: string, forfeit: boolean) => void): this;
-    on(event: 'timerTeamUndone', listener: (id: string, forfeit: boolean) => void): this;
-    on(event: string, listener: Function): this;
-}
-declare class SpeedcontrolUtil extends EventEmitter {
-    readonly runDataArray: Replicant<RunDataArray>;
-    readonly runDataActiveRun: Replicant<RunDataActiveRun>;
-    readonly runDataActiveRunSurrounding: Replicant<RunDataActiveRunSurrounding>;
-    readonly timer: Replicant<Timer>;
-    readonly runFinishTimes: Replicant<RunFinishTimes>;
-    timerChangesDisabled: Replicant<TimerChangesDisabled>;
+import { NodeCGServer } from 'nodecg/types/lib/nodecg-instance';
+import { ReplicantServer } from 'nodecg/types/lib/replicant';
+import SpeedcontrolUtilShared from './shared';
+declare class SpeedcontrolUtil extends SpeedcontrolUtilShared {
+    readonly runDataArray: ReplicantServer<RunDataArray>;
+    readonly runDataActiveRun: ReplicantServer<RunDataActiveRun>;
+    readonly runDataActiveRunSurrounding: ReplicantServer<RunDataActiveRunSurrounding>;
+    readonly timer: ReplicantServer<Timer>;
+    readonly runFinishTimes: ReplicantServer<RunFinishTimes>;
+    timerChangesDisabled: ReplicantServer<TimerChangesDisabled>;
     sendMessage: SendMessage;
-    constructor(nodecg: NodeCG);
+    constructor(nodecg: NodeCGServer);
     /**
      * Returns the currently active run data object.
      */
@@ -44,16 +33,6 @@ declare class SpeedcontrolUtil extends EventEmitter {
      * @param arg Can either be a run data object or a unique ID string.
      */
     findRunIndex(arg?: RunData | string | null): number;
-    /**
-     * Gets the total amount of players in a specified run.
-     * @param runData Run data object.
-     */
-    static getRunTotalPlayers(runData: RunData): number;
-    /**
-     * Takes a run data object and returns a formed string of the player names.
-     * @param runData Run Data object.
-     */
-    static formPlayerNamesStr(runData: RunData): string;
     /**
      * Starts the nodecg-speedcontrol timer.
      */

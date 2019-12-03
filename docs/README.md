@@ -1,6 +1,6 @@
-**[speedcontrol-util](README.md)**
+[speedcontrol-util](README.md) › [Globals](globals.md)
 
-[Globals](globals.md)
+# speedcontrol-util
 
 # speedcontrol-util
 

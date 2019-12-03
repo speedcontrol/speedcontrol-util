@@ -1,6 +1,4 @@
-**[speedcontrol-util](README.md)**
-
-[Globals](globals.md)
+[speedcontrol-util](README.md) › [Globals](globals.md)
 
 # speedcontrol-util
 
@@ -9,3 +7,5 @@
 ### External modules
 
 * ["index"](modules/_index_.md)
+* ["server"](modules/_server_.md)
+* ["shared"](modules/_shared_.md)
