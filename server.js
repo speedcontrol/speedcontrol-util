@@ -63,6 +63,7 @@ var SpeedcontrolUtil = /** @class */ (function (_super) {
         _this.runDataActiveRunSurrounding = nodecg.Replicant('runDataActiveRunSurrounding', sc);
         _this.timer = nodecg.Replicant('timer', sc);
         _this.runFinishTimes = nodecg.Replicant('runFinishTimes', sc);
+        _this.twitchCommercialTimer = nodecg.Replicant('twitchCommercialTimer', sc);
         _this.timerChangesDisabled = nodecg.Replicant('timerChangesDisabled', sc);
         _this.sendMessage = nodecg.extensions[sc].sendMessage;
         // Emit events when the timer state changes.

@@ -1,4 +1,4 @@
-import { RunDataActiveRunSurrounding, TimerChangesDisabled } from 'nodecg-speedcontrol/schemas';
+import { RunDataActiveRunSurrounding, TimerChangesDisabled, TwitchCommercialTimer } from 'nodecg-speedcontrol/schemas';
 import { RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessageReturnMap, Timer } from 'nodecg-speedcontrol/types';
 import { NodeCGBrowser } from 'nodecg/types/lib/nodecg-instance';
 import { ReplicantBrowser } from 'nodecg/types/lib/replicant';
@@ -9,6 +9,7 @@ declare class SpeedcontrolUtil extends SpeedcontrolUtilShared {
     readonly runDataActiveRunSurrounding: ReplicantBrowser<RunDataActiveRunSurrounding>;
     readonly timer: ReplicantBrowser<Timer>;
     readonly runFinishTimes: ReplicantBrowser<RunFinishTimes>;
+    readonly twitchCommercialTimer: ReplicantBrowser<TwitchCommercialTimer>;
     timerChangesDisabled: ReplicantBrowser<TimerChangesDisabled>;
     readonly nodecg: NodeCGBrowser;
     constructor(nodecg: NodeCGBrowser);

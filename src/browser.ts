@@ -1,5 +1,5 @@
 import clone from 'clone';
-import { RunDataActiveRunSurrounding, TimerChangesDisabled } from 'nodecg-speedcontrol/schemas'; // eslint-disable-line max-len
+import { RunDataActiveRunSurrounding, TimerChangesDisabled, TwitchCommercialTimer } from 'nodecg-speedcontrol/schemas'; // eslint-disable-line max-len
 import { RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessageReturnMap, Timer } from 'nodecg-speedcontrol/types'; // eslint-disable-line object-curly-newline, max-len
 import { NodeCGBrowser } from 'nodecg/types/lib/nodecg-instance';
 import { ReplicantBrowser } from 'nodecg/types/lib/replicant';
@@ -13,6 +13,7 @@ class SpeedcontrolUtil extends SpeedcontrolUtilShared {
   readonly runDataActiveRunSurrounding: ReplicantBrowser<RunDataActiveRunSurrounding>
   readonly timer: ReplicantBrowser<Timer>;
   readonly runFinishTimes: ReplicantBrowser<RunFinishTimes>;
+  readonly twitchCommercialTimer: ReplicantBrowser<TwitchCommercialTimer>;
   timerChangesDisabled: ReplicantBrowser<TimerChangesDisabled>;
   readonly nodecg: NodeCGBrowser;
 
@@ -23,6 +24,7 @@ class SpeedcontrolUtil extends SpeedcontrolUtilShared {
     this.runDataActiveRunSurrounding = nodecg.Replicant('runDataActiveRunSurrounding', sc);
     this.timer = nodecg.Replicant('timer', sc);
     this.runFinishTimes = nodecg.Replicant('runFinishTimes', sc);
+    this.twitchCommercialTimer = nodecg.Replicant('twitchCommercialTimer', sc);
     this.timerChangesDisabled = nodecg.Replicant('timerChangesDisabled', sc);
     this.nodecg = nodecg;
 
