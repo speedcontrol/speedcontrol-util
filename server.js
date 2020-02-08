@@ -66,6 +66,7 @@ var SpeedcontrolUtil = /** @class */ (function (_super) {
         _this.twitchCommercialTimer = nodecg.Replicant('twitchCommercialTimer', sc);
         _this.timerChangesDisabled = nodecg.Replicant('timerChangesDisabled', sc);
         _this.sendMessage = nodecg.extensions[sc].sendMessage;
+        _this.listenFor = nodecg.extensions[sc].listenFor;
         // Emit events when the timer state changes.
         _this.timer.on('change', function (newVal, oldVal, opQ) {
             if (!oldVal) {

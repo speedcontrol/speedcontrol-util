@@ -1,5 +1,5 @@
 import { RunDataActiveRunSurrounding, TimerChangesDisabled, TwitchCommercialTimer } from 'nodecg-speedcontrol/schemas';
-import { RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessage, SendMessageReturnMap, Timer } from 'nodecg-speedcontrol/types';
+import { ListenFor, RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessage, SendMessageReturnMap, Timer } from 'nodecg-speedcontrol/types';
 import { NodeCGServer } from 'nodecg/types/lib/nodecg-instance';
 import { ReplicantServer } from 'nodecg/types/lib/replicant';
 import SpeedcontrolUtilShared from './shared';
@@ -12,6 +12,7 @@ declare class SpeedcontrolUtil extends SpeedcontrolUtilShared {
     readonly twitchCommercialTimer: ReplicantServer<TwitchCommercialTimer>;
     timerChangesDisabled: ReplicantServer<TimerChangesDisabled>;
     sendMessage: SendMessage;
+    listenFor: ListenFor;
     constructor(nodecg: NodeCGServer);
     /**
      * Returns the currently active run data object.
