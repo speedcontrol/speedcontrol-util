@@ -46,9 +46,17 @@
         "node_modules/nodecg",
         "../../../.."
       ],
+      "nodecg/*": [
+        "node_modules/nodecg/*",
+        "../../../../*"
+      ],
       "nodecg-speedcontrol": [
         "node_modules/nodecg-speedcontrol",
         "../../../nodecg-speedcontrol"
+      ],
+      "nodecg-speedcontrol/*": [
+        "node_modules/nodecg-speedcontrol/*",
+        "../../../nodecg-speedcontrol/*"
       ],
       "*": [
         "node_modules/*"
