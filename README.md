@@ -6,7 +6,7 @@ Node.js package with utilities to help you code NodeCG bundles that interface wi
 
 ## Install
 
-`$ npm install speedcontrol-util --save`
+`$ npm install speedcontrol-util`
 
 ### Example
 
@@ -30,5 +30,3 @@ export = (nodecg: NodeCG) => {
 };
 
 ```
-
-Some simple auto generated documentation from the TypeScript is [available here](docs/README.md).

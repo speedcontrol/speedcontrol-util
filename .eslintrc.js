@@ -7,6 +7,18 @@ module.exports = {
   plugins: [
     '@typescript-eslint',
   ],
+  settings: {
+    'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
+    'import/resolver': {
+      node: {
+        moduleDirectory: [
+          'node_modules',
+          '.',
+        ],
+      },
+    },
+  },
+
   extends: [
     'airbnb-base',
     'eslint:recommended',
@@ -14,9 +26,6 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:import/typescript',
   ],
-  settings: {
-    'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
-  },
   rules: {
     'import/extensions': ['error', 'ignorePackages', {
       js: 'never',

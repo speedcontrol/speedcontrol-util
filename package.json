@@ -20,28 +20,25 @@
   },
   "license": "MIT",
   "author": "zoton2",
-  "main": "./index.js",
-  "types": "./index.d.ts",
+  "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "autofix": "eslint --fix --ext .ts src",
     "build": "tsc -b tsconfig.json",
-    "docs": "typedoc --theme markdown --out ./docs ./src/index.ts",
     "watch": "tsc -b tsconfig.json -w"
   },
   "dependencies": {
-    "clone": "^2.1.2",
-    "nodecg": "^1.5.0",
-    "nodecg-speedcontrol": "github:speedcontrol/nodecg-speedcontrol#dev"
+    "clone": "^2.1.2"
   },
   "devDependencies": {
     "@types/clone": "^0.1.30",
-    "@typescript-eslint/eslint-plugin": "^2.19.0",
-    "@typescript-eslint/parser": "^2.19.0",
+    "@typescript-eslint/eslint-plugin": "^2.24.0",
+    "@typescript-eslint/parser": "^2.24.0",
     "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.1",
-    "typedoc": "^0.16.9",
-    "typedoc-plugin-markdown": "^2.2.16",
-    "typescript": "^3.7.5"
+    "nodecg": "^1.6.0",
+    "nodecg-speedcontrol": "github:speedcontrol/nodecg-speedcontrol#dev",
+    "typescript": "^3.8.3"
   }
 }
