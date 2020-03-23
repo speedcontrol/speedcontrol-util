@@ -28,7 +28,9 @@
     "watch": "tsc -b tsconfig.json -w"
   },
   "dependencies": {
-    "clone": "^2.1.2"
+    "clone": "^2.1.2",
+    "nodecg": "^1.6.0",
+    "nodecg-speedcontrol": "github:speedcontrol/nodecg-speedcontrol#dev"
   },
   "devDependencies": {
     "@types/clone": "^0.1.30",
@@ -37,8 +39,6 @@
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.1",
-    "nodecg": "^1.6.0",
-    "nodecg-speedcontrol": "github:speedcontrol/nodecg-speedcontrol#dev",
     "typescript": "^3.8.3"
   }
 }
