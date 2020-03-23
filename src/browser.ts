@@ -1,6 +1,6 @@
 import clone from 'clone';
 import { RunDataActiveRunSurrounding, TimerChangesDisabled, TwitchCommercialTimer } from 'nodecg-speedcontrol/schemas'; // eslint-disable-line max-len
-import { RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessageReturnMap, Timer } from 'nodecg-speedcontrol/types'; // eslint-disable-line object-curly-newline, max-len
+import { CommercialDuration, RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessageReturnMap, Timer } from 'nodecg-speedcontrol/types'; // eslint-disable-line object-curly-newline, max-len
 import { NodeCGBrowser } from 'nodecg/types/lib/nodecg-instance';
 import { ReplicantBrowser } from 'nodecg/types/lib/replicant';
 import SpeedcontrolUtilShared from './shared';
@@ -122,7 +122,7 @@ class SpeedcontrolUtil extends SpeedcontrolUtilShared {
    * Starts the nodecg-speedcontrol timer.
    */
   async startTimer(): Promise<void> {
-    await this.nodecg.sendMessageToBundle('timerStart', sc);
+    return this.nodecg.sendMessageToBundle('timerStart', sc);
   }
 
   /**
@@ -139,14 +139,14 @@ class SpeedcontrolUtil extends SpeedcontrolUtilShared {
     if (run && !uuid) {
       throw new Error(`Run is active but team with index ${teamIndex} unavailable`);
     }
-    await this.nodecg.sendMessageToBundle('timerStop', sc, { id: uuid });
+    return this.nodecg.sendMessageToBundle('timerStop', sc, { id: uuid });
   }
 
   /**
    * Resets the nodecg-speedcontrol timer.
    */
   async resetTimer(): Promise<void> {
-    await this.nodecg.sendMessageToBundle('timerReset', sc);
+    return this.nodecg.sendMessageToBundle('timerReset', sc);
   }
 
   /**
@@ -166,8 +166,9 @@ class SpeedcontrolUtil extends SpeedcontrolUtilShared {
   /**
    * Attempts to start a Twitch commercial on the set channel in the bundle.
    */
-  async startTwitchCommercial(): Promise<SendMessageReturnMap['twitchStartCommercial']> {
-    return this.nodecg.sendMessageToBundle('twitchStartCommercial', sc);
+  async startTwitchCommercial(duration?: CommercialDuration):
+    Promise<SendMessageReturnMap['twitchStartCommercial']> {
+    return this.nodecg.sendMessageToBundle('twitchStartCommercial', sc, { duration });
   }
 }
 

@@ -1,6 +1,6 @@
 import clone from 'clone';
 import { RunDataActiveRunSurrounding, TimerChangesDisabled, TwitchCommercialTimer } from 'nodecg-speedcontrol/schemas'; // eslint-disable-line max-len
-import { ExtensionReturn, ListenFor, RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessage, SendMessageReturnMap, Timer } from 'nodecg-speedcontrol/types'; // eslint-disable-line object-curly-newline, max-len
+import { CommercialDuration, ExtensionReturn, ListenFor, RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessage, SendMessageReturnMap, Timer } from 'nodecg-speedcontrol/types'; // eslint-disable-line object-curly-newline, max-len
 import { NodeCGServer } from 'nodecg/types/lib/nodecg-instance';
 import { ReplicantServer } from 'nodecg/types/lib/replicant';
 import SpeedcontrolUtilShared from './shared';
@@ -122,7 +122,7 @@ class SpeedcontrolUtil extends SpeedcontrolUtilShared {
    * Starts the nodecg-speedcontrol timer.
    */
   async startTimer(): Promise<void> {
-    await this.sendMessage('timerStart');
+    return this.sendMessage('timerStart');
   }
 
   /**
@@ -139,14 +139,14 @@ class SpeedcontrolUtil extends SpeedcontrolUtilShared {
     if (run && !uuid) {
       throw new Error(`Run is active but team with index ${teamIndex} unavailable`);
     }
-    await this.sendMessage('timerStop', { id: uuid });
+    return this.sendMessage('timerStop', { id: uuid });
   }
 
   /**
    * Resets the nodecg-speedcontrol timer.
    */
   async resetTimer(): Promise<void> {
-    await this.sendMessage('timerReset');
+    return this.sendMessage('timerReset');
   }
 
   /**
@@ -166,8 +166,9 @@ class SpeedcontrolUtil extends SpeedcontrolUtilShared {
   /**
    * Attempts to start a Twitch commercial on the set channel in the bundle.
    */
-  async startTwitchCommercial(): Promise<SendMessageReturnMap['twitchStartCommercial']> {
-    return this.sendMessage('twitchStartCommercial');
+  async startTwitchCommercial(duration?: CommercialDuration):
+    Promise<SendMessageReturnMap['twitchStartCommercial']> {
+    return this.sendMessage('twitchStartCommercial', { duration });
   }
 }
 
