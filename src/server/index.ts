@@ -1,23 +1,24 @@
 import clone from 'clone';
 import { RunDataActiveRunSurrounding, TimerChangesDisabled, TwitchCommercialTimer } from 'nodecg-speedcontrol/schemas'; // eslint-disable-line max-len
-import { CommercialDuration, RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessageReturnMap, Timer } from 'nodecg-speedcontrol/types'; // eslint-disable-line object-curly-newline, max-len
-import { NodeCGBrowser } from 'nodecg/types/lib/nodecg-instance';
-import { ReplicantBrowser } from 'nodecg/types/lib/replicant';
-import SpeedcontrolUtilShared from './shared';
+import { CommercialDuration, ExtensionReturn, ListenFor, RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessage, SendMessageReturnMap, Timer } from 'nodecg-speedcontrol/types'; // eslint-disable-line object-curly-newline, max-len
+import { NodeCGServer } from 'nodecg/types/lib/nodecg-instance';
+import { ReplicantServer } from 'nodecg/types/lib/replicant';
+import SpeedcontrolUtilShared from '../shared';
 
 const sc = 'nodecg-speedcontrol';
 
 class SpeedcontrolUtil extends SpeedcontrolUtilShared {
-  readonly runDataArray: ReplicantBrowser<RunDataArray>;
-  readonly runDataActiveRun: ReplicantBrowser<RunDataActiveRun>;
-  readonly runDataActiveRunSurrounding: ReplicantBrowser<RunDataActiveRunSurrounding>
-  readonly timer: ReplicantBrowser<Timer>;
-  readonly runFinishTimes: ReplicantBrowser<RunFinishTimes>;
-  readonly twitchCommercialTimer: ReplicantBrowser<TwitchCommercialTimer>;
-  timerChangesDisabled: ReplicantBrowser<TimerChangesDisabled>;
-  readonly nodecg: NodeCGBrowser;
+  readonly runDataArray: ReplicantServer<RunDataArray>;
+  readonly runDataActiveRun: ReplicantServer<RunDataActiveRun>;
+  readonly runDataActiveRunSurrounding: ReplicantServer<RunDataActiveRunSurrounding>
+  readonly timer: ReplicantServer<Timer>;
+  readonly runFinishTimes: ReplicantServer<RunFinishTimes>;
+  readonly twitchCommercialTimer: ReplicantServer<TwitchCommercialTimer>;
+  timerChangesDisabled: ReplicantServer<TimerChangesDisabled>;
+  sendMessage: SendMessage;
+  listenFor: ListenFor;
 
-  constructor(nodecg: NodeCGBrowser) {
+  constructor(nodecg: NodeCGServer) {
     super();
     this.runDataArray = nodecg.Replicant('runDataArray', sc);
     this.runDataActiveRun = nodecg.Replicant('runDataActiveRun', sc);
@@ -26,7 +27,8 @@ class SpeedcontrolUtil extends SpeedcontrolUtilShared {
     this.runFinishTimes = nodecg.Replicant('runFinishTimes', sc);
     this.twitchCommercialTimer = nodecg.Replicant('twitchCommercialTimer', sc);
     this.timerChangesDisabled = nodecg.Replicant('timerChangesDisabled', sc);
-    this.nodecg = nodecg;
+    this.sendMessage = (nodecg.extensions[sc] as unknown as ExtensionReturn).sendMessage;
+    this.listenFor = (nodecg.extensions[sc] as unknown as ExtensionReturn).listenFor;
 
     // Emit events when the timer state changes.
     this.timer.on('change', (newVal, oldVal, opQ) => {
@@ -88,7 +90,7 @@ class SpeedcontrolUtil extends SpeedcontrolUtilShared {
    * Returns the array of runs.
    */
   getRunDataArray(): RunDataArray {
-    return clone(this.runDataArray.value || []);
+    return clone(this.runDataArray.value);
   }
 
   /**
@@ -98,9 +100,7 @@ class SpeedcontrolUtil extends SpeedcontrolUtilShared {
    * @param run Run data object, will return runs after this one if supplied.
    */
   getNextRuns(amount = 4, run?: RunData | null): RunData[] {
-    const nextRun = (this.runDataActiveRunSurrounding.value)
-      ? this.runDataActiveRunSurrounding.value.next : undefined;
-    let runIndex = this.findRunIndex(run || nextRun);
+    let runIndex = this.findRunIndex(run || this.runDataActiveRunSurrounding.value.next);
     runIndex = (run) ? runIndex += 1 : runIndex;
     return this.getRunDataArray().slice(runIndex, runIndex + amount);
   }
@@ -122,7 +122,7 @@ class SpeedcontrolUtil extends SpeedcontrolUtilShared {
    * Starts the nodecg-speedcontrol timer.
    */
   async startTimer(): Promise<void> {
-    return this.nodecg.sendMessageToBundle('timerStart', sc);
+    return this.sendMessage('timerStart');
   }
 
   /**
@@ -139,14 +139,14 @@ class SpeedcontrolUtil extends SpeedcontrolUtilShared {
     if (run && !uuid) {
       throw new Error(`Run is active but team with index ${teamIndex} unavailable`);
     }
-    return this.nodecg.sendMessageToBundle('timerStop', sc, { id: uuid });
+    return this.sendMessage('timerStop', { id: uuid });
   }
 
   /**
    * Resets the nodecg-speedcontrol timer.
    */
   async resetTimer(): Promise<void> {
-    return this.nodecg.sendMessageToBundle('timerReset', sc);
+    return this.sendMessage('timerReset');
   }
 
   /**
@@ -168,7 +168,7 @@ class SpeedcontrolUtil extends SpeedcontrolUtilShared {
    */
   async startTwitchCommercial(duration?: CommercialDuration):
     Promise<SendMessageReturnMap['twitchStartCommercial']> {
-    return this.nodecg.sendMessageToBundle('twitchStartCommercial', sc, { duration });
+    return this.sendMessage('twitchStartCommercial', { duration });
   }
 }
 

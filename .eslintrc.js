@@ -18,7 +18,6 @@ module.exports = {
       },
     },
   },
-
   extends: [
     'airbnb-base',
     'eslint:recommended',
