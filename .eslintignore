@@ -2,9 +2,4 @@
 node_modules/**/*
 schemas/**/*
 types/**/*
-/*.js
-/*.js.map
-/*.d.ts
-/browser/**/*
-/server/**/*
-/shared/**/*
+dist/**/*
