@@ -1,8 +1,9 @@
 .eslintrc.js
 node_modules/**/*
+schemas/**/*
 /*.js
 /*.js.map
 /*.d.ts
-/browser/**/8
+/browser/**/*
 /server/**/*
 /shared/**/*
