@@ -1,3 +1,7 @@
-import SpeedcontrolUtil from './server';
+import Browser from './browser';
+import Server from './server';
 
-export = SpeedcontrolUtil;
+export default Server;
+export const SpeedcontrolUtil = Server;
+export const SpeedcontrolUtilServer = Server;
+export const SpeedcontrolUtilBrowser = Browser;

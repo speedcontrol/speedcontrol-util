@@ -75,7 +75,7 @@ jobs:
       id: commit
       continue-on-error: true
       run: |
-        git add -f browser server shared index.d.ts index.js index.js.map
+        git add -f dist
         git commit -m "Built files" -a
 
     # Pushes the built files
