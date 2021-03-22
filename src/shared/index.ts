@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events';
-import { RunData } from 'nodecg-speedcontrol/types';
+import { RunData, Timer } from 'nodecg-speedcontrol/types';
+import { OperationQueueItem } from 'nodecg/types/lib/replicant';
 
 interface SpeedcontrolUtil {
   on(event: 'timerStarted', listener: () => void): this;
@@ -34,4 +35,57 @@ class SpeedcontrolUtil extends EventEmitter {
   }
 }
 
-export = SpeedcontrolUtil;
+// Emit events when the timer state changes.
+export function onTimerChange(
+  { emit }: EventEmitter,
+  newVal: Timer,
+  oldVal?: Timer,
+  opQ?: OperationQueueItem[],
+): void {
+  if (!oldVal) {
+    return;
+  }
+  const oldState = oldVal.state;
+  const newState = newVal.state;
+  if (oldState !== newState) {
+    if (newState === 'running') {
+      if (oldState === 'paused') {
+        emit('timerResumed');
+      } else if (oldState === 'stopped') {
+        emit('timerStarted');
+      }
+    } else if (newState === 'finished') {
+      emit('timerStopped');
+    } else if (newState === 'paused') {
+      emit('timerPaused');
+    } else if (newState === 'stopped') {
+      emit('timerReset');
+    }
+  }
+
+  if (!opQ) {
+    return;
+  }
+  opQ.forEach((operation) => {
+    // If timer is paused/stopped and the time changes, it was edited somehow.
+    if (['paused', 'stopped'].includes(newState) && oldState === newState
+    && operation.path === '/' && operation.method === 'update'
+    // @ts-ignore: args not properly defined in typings.
+    && operation.args.prop === 'milliseconds') {
+      emit('timerEdited');
+    }
+    // When teams stop/undo.
+    if (operation.path === '/teamFinishTimes') {
+      // @ts-ignore: args not properly defined in typings.
+      const teamID = operation.args.prop as string;
+      const time = newVal.teamFinishTimes[teamID];
+      if (operation.method === 'add') {
+        emit('timerTeamStopped', teamID, time.state === 'forfeit');
+      } else if (operation.method === 'delete') {
+        emit('timerTeamUndone', teamID);
+      }
+    }
+  });
+}
+
+export default SpeedcontrolUtil;

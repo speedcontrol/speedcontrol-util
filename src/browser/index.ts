@@ -3,7 +3,7 @@ import { RunDataActiveRunSurrounding, TimerChangesDisabled, TwitchCommercialTime
 import { CommercialDuration, RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessageReturnMap, Timer } from 'nodecg-speedcontrol/types';
 import { NodeCGBrowser } from 'nodecg/types/lib/nodecg-instance';
 import { ReplicantBrowser } from 'nodecg/types/lib/replicant';
-import SpeedcontrolUtilShared from '../shared';
+import SpeedcontrolUtilShared, { onTimerChange } from '../shared';
 
 const sc = 'nodecg-speedcontrol';
 
@@ -30,48 +30,7 @@ class SpeedcontrolUtil extends SpeedcontrolUtilShared {
 
     // Emit events when the timer state changes.
     this.timer.on('change', (newVal, oldVal, opQ) => {
-      if (!oldVal) {
-        return;
-      }
-      const oldState = oldVal.state;
-      const newState = newVal.state;
-      if (oldState !== newState) {
-        if (newState === 'running') {
-          if (oldState === 'paused') {
-            this.emit('timerResumed');
-          } else if (oldState === 'stopped') {
-            this.emit('timerStarted');
-          }
-        } else if (newState === 'finished') {
-          this.emit('timerStopped');
-        } else if (newState === 'paused') {
-          this.emit('timerPaused');
-        } else if (newState === 'stopped') {
-          this.emit('timerReset');
-        }
-      }
-
-      if (!opQ) {
-        return;
-      }
-      opQ.forEach((operation) => {
-        // If timer is paused/stopped and the time changes, it was edited somehow.
-        if (['paused', 'stopped'].includes(newState) && oldState === newState
-        && operation.path === '/' && operation.method === 'update'
-        && operation.args.prop === 'milliseconds') {
-          this.emit('timerEdited');
-        }
-        // When teams stop/undo.
-        if (operation.path === '/teamFinishTimes') {
-          const teamID = operation.args.prop as string;
-          const time = newVal.teamFinishTimes[teamID];
-          if (operation.method === 'add') {
-            this.emit('timerTeamStopped', teamID, time.state === 'forfeit');
-          } else if (operation.method === 'delete') {
-            this.emit('timerTeamUndone', teamID);
-          }
-        }
-      });
+      onTimerChange(this, newVal, oldVal, opQ);
     });
   }
 
