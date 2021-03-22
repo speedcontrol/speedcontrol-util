@@ -116,4 +116,9 @@ dist
 .pnp.*
 
 # Built files
-dist
+/index.js
+/index.js.map
+/index.d.ts
+/browser
+/server
+/shared
