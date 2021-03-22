@@ -29,8 +29,8 @@
   },
   "dependencies": {
     "clone": "^2.1.2",
-    "nodecg": "^1.6.0",
-    "nodecg-speedcontrol": "github:speedcontrol/nodecg-speedcontrol#dev"
+    "nodecg": "^1.8.1",
+    "nodecg-speedcontrol": "git+https://git@github.com/speedcontrol/nodecg-speedcontrol.git#dev"
   },
   "devDependencies": {
     "@types/clone": "^0.1.30",
