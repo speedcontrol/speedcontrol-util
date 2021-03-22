@@ -1,7 +1,7 @@
-import { RunDataActiveRunSurrounding, TimerChangesDisabled, TwitchCommercialTimer } from 'nodecg-speedcontrol/schemas';
-import { CommercialDuration, ListenFor, RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessage, SendMessageReturnMap, Timer } from 'nodecg-speedcontrol/types';
-import { NodeCGServer } from 'nodecg/types/lib/nodecg-instance';
-import { ReplicantServer } from 'nodecg/types/lib/replicant';
+import { RunDataActiveRunSurrounding, TimerChangesDisabled, TwitchCommercialTimer } from '../../schemas';
+import { CommercialDuration, ListenFor, RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessage, SendMessageReturnMap, Timer } from '../../types';
+import { NodeCGServer } from '../../types/nodecg/lib/nodecg-instance';
+import { ReplicantServer } from '../../types/nodecg/lib/replicant';
 import SpeedcontrolUtilShared from '../shared';
 declare class SpeedcontrolUtil extends SpeedcontrolUtilShared {
     readonly runDataArray: ReplicantServer<RunDataArray>;
