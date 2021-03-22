@@ -54,7 +54,7 @@ jobs:
 
     # Bump version (if releasing)
     - name: Bump version (if releasing)
-      if: ${{ github.event_name === 'release' }}
+      if: ${{ github.event_name == 'release' }}
       run: npm version ${{ github.event.release.tag_name }}
 
     # Checkout build branche and merge the main into build
@@ -83,7 +83,7 @@ jobs:
 
     # NPM publish version (if releasing)
     - name: NPM publish
-      if: ${{ github.event_name === 'release' }}
+      if: ${{ github.event_name == 'release' }}
       env:
         NODE_AUTH_TOKEN: ${{ secrets['NPM_TOKEN'] }}
       run: npm publish --tag ${{ fromJSON('["latest", "next"]')[github.event.release.prerelease] }}
