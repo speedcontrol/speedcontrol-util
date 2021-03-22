@@ -10,8 +10,6 @@ interface SpeedcontrolUtil {
   on(event: 'timerEdited', listener: () => void): this;
   on(event: 'timerTeamStopped', listener: (id: string, forfeit: boolean) => void): this;
   on(event: 'timerTeamUndone', listener: (id: string, forfeit: boolean) => void): this;
-
-  on(event: string, listener: Function): this;
 }
 
 class SpeedcontrolUtil extends EventEmitter {

@@ -1,6 +1,6 @@
 import clone from 'clone';
-import { RunDataActiveRunSurrounding, TimerChangesDisabled, TwitchCommercialTimer } from 'nodecg-speedcontrol/schemas'; // eslint-disable-line max-len
-import { CommercialDuration, ExtensionReturn, ListenFor, RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessage, SendMessageReturnMap, Timer } from 'nodecg-speedcontrol/types'; // eslint-disable-line object-curly-newline, max-len
+import { RunDataActiveRunSurrounding, TimerChangesDisabled, TwitchCommercialTimer } from 'nodecg-speedcontrol/schemas';
+import { CommercialDuration, ExtensionReturn, ListenFor, RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessage, SendMessageReturnMap, Timer } from 'nodecg-speedcontrol/types';
 import { NodeCGServer } from 'nodecg/types/lib/nodecg-instance';
 import { ReplicantServer } from 'nodecg/types/lib/replicant';
 import SpeedcontrolUtilShared from '../shared';
@@ -10,7 +10,7 @@ const sc = 'nodecg-speedcontrol';
 class SpeedcontrolUtil extends SpeedcontrolUtilShared {
   readonly runDataArray: ReplicantServer<RunDataArray>;
   readonly runDataActiveRun: ReplicantServer<RunDataActiveRun>;
-  readonly runDataActiveRunSurrounding: ReplicantServer<RunDataActiveRunSurrounding>
+  readonly runDataActiveRunSurrounding: ReplicantServer<RunDataActiveRunSurrounding>;
   readonly timer: ReplicantServer<Timer>;
   readonly runFinishTimes: ReplicantServer<RunFinishTimes>;
   readonly twitchCommercialTimer: ReplicantServer<TwitchCommercialTimer>;
@@ -167,7 +167,7 @@ class SpeedcontrolUtil extends SpeedcontrolUtilShared {
    * Attempts to start a Twitch commercial on the set channel in the bundle.
    */
   async startTwitchCommercial(duration?: CommercialDuration):
-    Promise<SendMessageReturnMap['twitchStartCommercial']> {
+  Promise<SendMessageReturnMap['twitchStartCommercial']> {
     return this.sendMessage('twitchStartCommercial', { duration });
   }
 }

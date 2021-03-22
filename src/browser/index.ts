@@ -1,6 +1,6 @@
 import clone from 'clone';
-import { RunDataActiveRunSurrounding, TimerChangesDisabled, TwitchCommercialTimer } from 'nodecg-speedcontrol/schemas'; // eslint-disable-line max-len
-import { CommercialDuration, RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessageReturnMap, Timer } from 'nodecg-speedcontrol/types'; // eslint-disable-line object-curly-newline, max-len
+import { RunDataActiveRunSurrounding, TimerChangesDisabled, TwitchCommercialTimer } from 'nodecg-speedcontrol/schemas';
+import { CommercialDuration, RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessageReturnMap, Timer } from 'nodecg-speedcontrol/types';
 import { NodeCGBrowser } from 'nodecg/types/lib/nodecg-instance';
 import { ReplicantBrowser } from 'nodecg/types/lib/replicant';
 import SpeedcontrolUtilShared from '../shared';
@@ -10,7 +10,7 @@ const sc = 'nodecg-speedcontrol';
 class SpeedcontrolUtil extends SpeedcontrolUtilShared {
   readonly runDataArray: ReplicantBrowser<RunDataArray>;
   readonly runDataActiveRun: ReplicantBrowser<RunDataActiveRun>;
-  readonly runDataActiveRunSurrounding: ReplicantBrowser<RunDataActiveRunSurrounding>
+  readonly runDataActiveRunSurrounding: ReplicantBrowser<RunDataActiveRunSurrounding>;
   readonly timer: ReplicantBrowser<Timer>;
   readonly runFinishTimes: ReplicantBrowser<RunFinishTimes>;
   readonly twitchCommercialTimer: ReplicantBrowser<TwitchCommercialTimer>;
@@ -58,13 +58,11 @@ class SpeedcontrolUtil extends SpeedcontrolUtilShared {
         // If timer is paused/stopped and the time changes, it was edited somehow.
         if (['paused', 'stopped'].includes(newState) && oldState === newState
         && operation.path === '/' && operation.method === 'update'
-        // @ts-ignore: args not properly defined in typings.
         && operation.args.prop === 'milliseconds') {
           this.emit('timerEdited');
         }
         // When teams stop/undo.
         if (operation.path === '/teamFinishTimes') {
-          // @ts-ignore: args not properly defined in typings.
           const teamID = operation.args.prop as string;
           const time = newVal.teamFinishTimes[teamID];
           if (operation.method === 'add') {
@@ -167,7 +165,7 @@ class SpeedcontrolUtil extends SpeedcontrolUtilShared {
    * Attempts to start a Twitch commercial on the set channel in the bundle.
    */
   async startTwitchCommercial(duration?: CommercialDuration):
-    Promise<SendMessageReturnMap['twitchStartCommercial']> {
+  Promise<SendMessageReturnMap['twitchStartCommercial']> {
     return this.nodecg.sendMessageToBundle('twitchStartCommercial', sc, { duration });
   }
 }

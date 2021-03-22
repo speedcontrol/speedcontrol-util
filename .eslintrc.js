@@ -36,6 +36,7 @@ module.exports = {
       ts: 'never',
       tsx: 'never',
     }],
+    '@typescript-eslint/ban-ts-comment': 'off',
   },
 
   // Overrides for types.
