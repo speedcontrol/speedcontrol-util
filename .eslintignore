@@ -1,6 +1,7 @@
 .eslintrc.js
 node_modules/**/*
 schemas/**/*
+types/**/*
 /*.js
 /*.js.map
 /*.d.ts

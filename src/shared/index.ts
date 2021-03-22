@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
-import { OperationQueueItem } from 'nodecg/types/lib/replicant';
 import { RunData, Timer } from '../../types';
+import { OperationQueueItem } from '../../types/nodecg/lib/replicant';
 
 interface SpeedcontrolUtil {
   on(event: 'timerStarted', listener: () => void): this;
