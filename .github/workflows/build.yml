@@ -1,4 +1,4 @@
-name: Build
+name: Build(/Release)
 
 on:
   push:
@@ -55,7 +55,10 @@ jobs:
     # Bump version (if releasing)
     - name: Bump version (if releasing)
       if: ${{ github.event_name == 'release' }}
-      run: npm version ${{ github.event.release.tag_name }}
+      run: |
+        npm version --no-git-tag-version ${{ github.event.release.tag_name }}
+        git commit -m ${{ github.event.release.tag_name }} -a
+        git push
 
     # Checkout build branche and merge the main into build
     # This can "fail" if the build branch doesn't exist, but we should continue anyway
