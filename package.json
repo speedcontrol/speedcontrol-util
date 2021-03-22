@@ -20,30 +20,36 @@
   },
   "license": "MIT",
   "author": "zoton2",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "autofix": "eslint --fix --ext .ts src",
     "build": "tsc -b tsconfig.json",
     "clean": "trash node_modules/.cache && trash browser && trash server && trash shared && trash index.d.ts && trash index.js && trash index.js.map",
+    "copy-schemas": "trash schemas && shx cp -r node_modules/nodecg-speedcontrol/schemas schemas",
+    "copy-types": "concurrently \"npm:copy-types:*\"",
+    "copy-types:nodecg": "trash types/nodecg && shx cp -r node_modules/nodecg/types types/nodecg",
+    "copy-types:speedcontrol": "trash types/speedcontrol && shx cp -r node_modules/nodecg-speedcontrol/types types/speedcontrol && cd types/speedcontrol && shx rm .eslintrc.js vue-shim.d.ts VueDraggable.d.ts vuetify-shim.d.ts ParseDuration.d.ts",
     "watch": "tsc -b tsconfig.json -w"
   },
   "dependencies": {
-    "clone": "^2.1.2",
-    "nodecg": "^1.8.1",
-    "nodecg-speedcontrol": "git+https://git@github.com/speedcontrol/nodecg-speedcontrol.git#dev",
-    "trash-cli": "^4.0.0"
+    "@types/needle": "^2.5.1",
+    "clone": "^2.1.2"
   },
   "devDependencies": {
     "@types/clone": "^2.1.0",
-    "@types/needle": "^2.5.1",
     "@types/node": "^14.14.35",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
+    "concurrently": "^6.0.0",
     "eslint": "^7.22.0",
     "eslint-config-airbnb-typescript": "^12.3.1",
     "eslint-import-resolver-typescript": "^2.4.0",
     "eslint-plugin-import": "^2.22.1",
+    "nodecg": "^1.8.1",
+    "nodecg-speedcontrol": "git+https://git@github.com/speedcontrol/nodecg-speedcontrol.git#dev",
+    "shx": "^0.3.3",
+    "trash-cli": "^4.0.0",
     "typescript": "^4.2.3"
   }
 }
