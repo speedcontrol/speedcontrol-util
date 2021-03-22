@@ -20,8 +20,8 @@
   },
   "license": "MIT",
   "author": "zoton2",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "autofix": "eslint --fix --ext .ts src",
     "build": "tsc -b tsconfig.json",
