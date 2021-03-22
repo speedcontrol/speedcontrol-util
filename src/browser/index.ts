@@ -1,8 +1,8 @@
 import clone from 'clone';
-import { RunDataActiveRunSurrounding, TimerChangesDisabled, TwitchCommercialTimer } from 'nodecg-speedcontrol/schemas';
-import { CommercialDuration, RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessageReturnMap, Timer } from 'nodecg-speedcontrol/types';
 import { NodeCGBrowser } from 'nodecg/types/lib/nodecg-instance';
 import { ReplicantBrowser } from 'nodecg/types/lib/replicant';
+import { RunDataActiveRunSurrounding, TimerChangesDisabled, TwitchCommercialTimer } from '../../schemas';
+import { CommercialDuration, RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessageReturnMap, Timer } from '../../types';
 import SpeedcontrolUtilShared, { onTimerChange } from '../shared';
 
 const sc = 'nodecg-speedcontrol';
