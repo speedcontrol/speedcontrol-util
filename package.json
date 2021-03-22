@@ -20,8 +20,8 @@
   },
   "license": "MIT",
   "author": "zoton2",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "autofix": "eslint --fix --ext .ts src",
     "build": "tsc -b tsconfig.json",
@@ -33,13 +33,15 @@
     "nodecg-speedcontrol": "git+https://git@github.com/speedcontrol/nodecg-speedcontrol.git#dev"
   },
   "devDependencies": {
-    "@types/clone": "^0.1.30",
-    "@types/needle": "^2.0.4",
-    "@typescript-eslint/eslint-plugin": "^2.30.0",
-    "@typescript-eslint/parser": "^2.30.0",
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-plugin-import": "^2.20.2",
-    "typescript": "^3.8.3"
+    "@types/clone": "^2.1.0",
+    "@types/needle": "^2.5.1",
+    "@types/node": "^14.14.35",
+    "@typescript-eslint/eslint-plugin": "^4.18.0",
+    "@typescript-eslint/parser": "^4.18.0",
+    "eslint": "^7.22.0",
+    "eslint-config-airbnb-typescript": "^12.3.1",
+    "eslint-import-resolver-typescript": "^2.4.0",
+    "eslint-plugin-import": "^2.22.1",
+    "typescript": "^4.2.3"
   }
 }
