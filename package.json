@@ -47,7 +47,7 @@
     "eslint-import-resolver-typescript": "^2.4.0",
     "eslint-plugin-import": "^2.22.1",
     "nodecg": "^1.8.1",
-    "nodecg-speedcontrol": "git+https://git@github.com/speedcontrol/nodecg-speedcontrol.git#dev",
+    "nodecg-speedcontrol": "git+https://git@github.com/speedcontrol/nodecg-speedcontrol.git",
     "shx": "^0.3.3",
     "trash-cli": "^4.0.0",
     "typescript": "^4.2.3"

@@ -1,6 +1,6 @@
 # speedcontrol-util
 
-*Currently developed around the `dev` branch of `nodecg-speedcontrol`, use it at your own risk!*
+*Currently in heavy/early development, breaking changes may happen!*
 
 Node.js package with utilities to help you code NodeCG bundles that interface with the nodecg-speedcontrol bundle.
 
@@ -13,9 +13,9 @@ Node.js package with utilities to help you code NodeCG bundles that interface wi
 #### JavaScript
 
 ```javascript
-const speedcontrolUtil = require('speedcontrol-util');
+const SpeedcontrolUtil = require('speedcontrol-util');
 module.exports = nodecg => {
-  const sc = new speedcontrolUtil(nodecg);
+  const sc = new SpeedcontrolUtil(nodecg);
   const activeRun = sc.runDataActiveRun; // instance of the replicant
 };
 ```
@@ -23,9 +23,9 @@ module.exports = nodecg => {
 #### TypeScript
 
 ```typescript
-import speedcontrolUtil from 'speedcontrol-util';
+import SpeedcontrolUtil from 'speedcontrol-util';
 export = (nodecg: NodeCG) => {
-  const sc = new speedcontrolUtil(nodecg);
+  const sc = new SpeedcontrolUtil(nodecg);
   const activeRun = sc.runDataActiveRun; // instance of the replicant
 };
 
