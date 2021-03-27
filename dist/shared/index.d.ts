@@ -24,5 +24,5 @@ declare class SpeedcontrolUtil extends EventEmitter {
      */
     static getRunTotalPlayers(runData: RunData): number;
 }
-export declare function onTimerChange({ emit }: EventEmitter, newVal: Timer, oldVal?: Timer, opQ?: OperationQueueItem[]): void;
+export declare function onTimerChange(class_: EventEmitter, newVal: Timer, oldVal?: Timer, opQ?: OperationQueueItem[]): void;
 export default SpeedcontrolUtil;

@@ -39,8 +39,7 @@ var SpeedcontrolUtil = /** @class */ (function (_super) {
     return SpeedcontrolUtil;
 }(events_1.EventEmitter));
 // Emit events when the timer state changes.
-function onTimerChange(_a, newVal, oldVal, opQ) {
-    var emit = _a.emit;
+function onTimerChange(class_, newVal, oldVal, opQ) {
     if (!oldVal) {
         return;
     }
@@ -49,20 +48,20 @@ function onTimerChange(_a, newVal, oldVal, opQ) {
     if (oldState !== newState) {
         if (newState === 'running') {
             if (oldState === 'paused') {
-                emit('timerResumed');
+                class_.emit('timerResumed');
             }
             else if (oldState === 'stopped') {
-                emit('timerStarted');
+                class_.emit('timerStarted');
             }
         }
         else if (newState === 'finished') {
-            emit('timerStopped');
+            class_.emit('timerStopped');
         }
         else if (newState === 'paused') {
-            emit('timerPaused');
+            class_.emit('timerPaused');
         }
         else if (newState === 'stopped') {
-            emit('timerReset');
+            class_.emit('timerReset');
         }
     }
     if (!opQ) {
@@ -74,7 +73,7 @@ function onTimerChange(_a, newVal, oldVal, opQ) {
             && operation.path === '/' && operation.method === 'update'
             // @ts-ignore: args not properly defined in typings.
             && operation.args.prop === 'milliseconds') {
-            emit('timerEdited');
+            class_.emit('timerEdited');
         }
         // When teams stop/undo.
         if (operation.path === '/teamFinishTimes') {
@@ -82,10 +81,10 @@ function onTimerChange(_a, newVal, oldVal, opQ) {
             var teamID = operation.args.prop;
             var time = newVal.teamFinishTimes[teamID];
             if (operation.method === 'add') {
-                emit('timerTeamStopped', teamID, time.state === 'forfeit');
+                class_.emit('timerTeamStopped', teamID, time.state === 'forfeit');
             }
             else if (operation.method === 'delete') {
-                emit('timerTeamUndone', teamID);
+                class_.emit('timerTeamUndone', teamID);
             }
         }
     });
