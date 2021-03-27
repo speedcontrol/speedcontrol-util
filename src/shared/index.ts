@@ -37,7 +37,7 @@ class SpeedcontrolUtil extends EventEmitter {
 
 // Emit events when the timer state changes.
 export function onTimerChange(
-  { emit }: EventEmitter,
+  class_: EventEmitter,
   newVal: Timer,
   oldVal?: Timer,
   opQ?: OperationQueueItem[],
@@ -50,16 +50,16 @@ export function onTimerChange(
   if (oldState !== newState) {
     if (newState === 'running') {
       if (oldState === 'paused') {
-        emit('timerResumed');
+        class_.emit('timerResumed');
       } else if (oldState === 'stopped') {
-        emit('timerStarted');
+        class_.emit('timerStarted');
       }
     } else if (newState === 'finished') {
-      emit('timerStopped');
+      class_.emit('timerStopped');
     } else if (newState === 'paused') {
-      emit('timerPaused');
+      class_.emit('timerPaused');
     } else if (newState === 'stopped') {
-      emit('timerReset');
+      class_.emit('timerReset');
     }
   }
 
@@ -72,7 +72,7 @@ export function onTimerChange(
     && operation.path === '/' && operation.method === 'update'
     // @ts-ignore: args not properly defined in typings.
     && operation.args.prop === 'milliseconds') {
-      emit('timerEdited');
+      class_.emit('timerEdited');
     }
     // When teams stop/undo.
     if (operation.path === '/teamFinishTimes') {
@@ -80,9 +80,9 @@ export function onTimerChange(
       const teamID = operation.args.prop as string;
       const time = newVal.teamFinishTimes[teamID];
       if (operation.method === 'add') {
-        emit('timerTeamStopped', teamID, time.state === 'forfeit');
+        class_.emit('timerTeamStopped', teamID, time.state === 'forfeit');
       } else if (operation.method === 'delete') {
-        emit('timerTeamUndone', teamID);
+        class_.emit('timerTeamUndone', teamID);
       }
     }
   });
