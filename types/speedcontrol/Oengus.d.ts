@@ -23,13 +23,14 @@ export interface OengusLine {
   categoryId: number | null;
   type: OengusRunType;
   runners: OengusUser[];
+  customDataDTO: string | null;
 }
 
 export enum OengusRunType {
   single = 'SINGLE',
   race = 'RACE',
   coop = 'COOP',
-  other = 'OTHER'
+  other = 'OTHER',
 }
 
 export interface OengusUser {
@@ -46,5 +47,5 @@ export interface OengusUser {
 }
 
 export enum OengusRole {
-  user = 'ROLE_USER'
+  user = 'ROLE_USER',
 }
