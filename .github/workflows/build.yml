@@ -32,7 +32,7 @@ jobs:
 
     # Update NPM to the latest version
     - name: Update NPM installation
-      run: npm install -g npm@7.7.0
+      run: npm install -g npm@latest
 
     # Checkout the main branch of this repository with full depth
     - name: Checkout
