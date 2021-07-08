@@ -39,6 +39,9 @@
     "scheduledS": {
       "type": "number"
     },
+    "relay": {
+      "type": "boolean"
+    },
     "teams": {
       "type": "array",
       "default": [],
@@ -50,6 +53,9 @@
             "type": "string"
           },
           "id": {
+            "type": "string"
+          },
+          "relayPlayerID": {
             "type": "string"
           },
           "players": {
