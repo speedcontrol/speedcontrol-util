@@ -1,7 +1,7 @@
 import clone from 'clone';
-import { CommercialDuration, ExtensionReturn, ListenFor, RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessage, SendMessageReturnMap, Timer } from '../../types';
 import { NodeCGServer } from '../../types/nodecg/lib/nodecg-instance';
 import { ReplicantServer } from '../../types/nodecg/lib/replicant';
+import { CommercialDuration, ExtensionReturn, ListenFor, RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessage, SendMessageReturnMap, Timer } from '../../types/speedcontrol';
 import { RunDataActiveRunSurrounding, TimerChangesDisabled, TwitchCommercialTimer } from '../../types/speedcontrol/schemas';
 import SpeedcontrolUtilShared, { onTimerChange } from '../shared';
 
