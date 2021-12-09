@@ -18,6 +18,7 @@ export interface OengusLine {
   estimate: string;
   setupTime: string;
   setupBlock: boolean;
+  setupBlockText: string | null;
   customRun: boolean;
   position: number;
   categoryId: number | null;
@@ -38,12 +39,19 @@ export interface OengusUser {
   username: string;
   usernameJapanese: string | null;
   enabled: boolean;
-  roles: OengusRole[];
-  twitterName: string | null;
-  twitchName: string | null;
-  speedruncomName: string | null;
-  atLeastOneAccountSynchronized: boolean;
-  emailPresentForExistingUser: boolean;
+  twitterName?: string | null; // deprecated
+  twitchName?: string | null; // deprecated
+  speedruncomName?: string | null; // deprecated
+  connections?: OengusUserConnections[]; // to be introduced
+  pronouns?: string | string[] | null; // to be introduced
+  country?: string | null; // to be introduced
+}
+
+export interface OengusUserConnections {
+  id: number;
+  platform: 'DISCORD' | 'SPEEDRUNCOM' | 'TWITCH' | 'TWITTER';
+  username: string;
+  usernameValidForPlatform: boolean;
 }
 
 export enum OengusRole {
