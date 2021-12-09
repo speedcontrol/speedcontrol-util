@@ -1,6 +1,6 @@
 {
   "name": "speedcontrol-util",
-  "version": "0.6.0-RC4",
+  "version": "0.6.0-RC5",
   "description": "Node.js package with utilities to help you code NodeCG bundles that interface with the nodecg-speedcontrol bundle.",
   "keywords": [
     "helper",
