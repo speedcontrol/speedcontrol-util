@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
-import { RunData, Timer } from '../../types';
 import { OperationQueueItem } from '../../types/nodecg/lib/replicant';
+import { RunData, Timer } from '../../types/speedcontrol';
 
 interface SpeedcontrolUtil {
   on(event: 'timerStarted', listener: () => void): this;
@@ -70,13 +70,15 @@ export function onTimerChange(
     // If timer is paused/stopped and the time changes, it was edited somehow.
     if (['paused', 'stopped'].includes(newState) && oldState === newState
     && operation.path === '/' && operation.method === 'update'
-    // @ts-ignore: args not properly defined in typings.
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore: args not properly defined in typings
     && operation.args.prop === 'milliseconds') {
       class_.emit('timerEdited');
     }
     // When teams stop/undo.
     if (operation.path === '/teamFinishTimes') {
-      // @ts-ignore: args not properly defined in typings.
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore: args not properly defined in typings
       const teamID = operation.args.prop as string;
       const time = newVal.teamFinishTimes[teamID];
       if (operation.method === 'add') {
