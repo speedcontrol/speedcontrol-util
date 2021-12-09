@@ -24,8 +24,10 @@ export interface SendMessageArgsMap {
   removeAllRuns: void;
 
   // Twitch
-  twitchCommercialStarted: { duration: CommercialDuration }
-  twitchStartCommercial: { duration?: CommercialDuration }
+  twitchCommercialStarted: { duration: CommercialDuration };
+  twitchStartCommercial: { duration?: CommercialDuration };
+  twitchExternalCommercial: { duration: CommercialDuration };
+  twitchStartCommercialTimer: { duration: CommercialDuration };
   twitchUpdateChannelInfo: { status?: string; game?: string };
   twitchAPIRequest: {
     method: NeedleHttpVerbs;
@@ -39,7 +41,7 @@ export interface SendMessageArgsMap {
   repeaterFeaturedChannels: string[];
 
   // Speedrun.com
-  srcomSearchForUserDataMultiple: { type: 'name' | 'twitch' | 'twitter', val: (string | undefined | null) }[];
+  srcomSearchForUserDataMultiple: { type: 'name' | 'srcom' | 'twitch' | 'twitter', val: (string | undefined | null) }[];
 }
 
 export interface SendMessageReturnMap {
@@ -62,7 +64,9 @@ export interface SendMessageReturnMap {
 
   // Twitch
   twitchCommercialStarted: void;
-  twitchStartCommercial: { duration: CommercialDuration }
+  twitchStartCommercial: { duration: CommercialDuration };
+  twitchExternalCommercial: void;
+  twitchStartCommercialTimer: void;
   twitchUpdateChannelInfo: boolean;
   twitchAPIRequest: NeedleResponse;
 

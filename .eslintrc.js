@@ -11,6 +11,7 @@ module.exports = {
     '@typescript-eslint',
   ],
   extends: [
+    'airbnb-base',
     'airbnb-typescript/base',
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
@@ -36,6 +37,5 @@ module.exports = {
       ts: 'never',
       tsx: 'never',
     }],
-    '@typescript-eslint/ban-ts-comment': 'off',
   },
 };
