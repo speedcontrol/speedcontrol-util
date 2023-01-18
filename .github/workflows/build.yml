@@ -16,14 +16,14 @@ jobs:
     steps:
     # Setup some Node.js stuff
     - name: Node.js setup
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
-        node-version: '16'
+        node-version: '18'
         registry-url: https://registry.npmjs.org/
 
     # Set NPM cache options
     - name: Set NPM cache
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ~/.npm
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -36,7 +36,7 @@ jobs:
 
     # Checkout the main branch of this repository with full depth
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         token: ${{ secrets['GITHUB_TOKEN'] }}
         ref: master
