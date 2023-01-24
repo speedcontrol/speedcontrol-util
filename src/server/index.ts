@@ -1,32 +1,33 @@
+import NodeCGTypes from '@alvancamp/test-nodecg-types';
 import clone from 'clone';
-import { NodeCGServer } from '../../types/nodecg/lib/nodecg-instance';
-import { ReplicantServer } from '../../types/nodecg/lib/replicant';
-import { CommercialDuration, ExtensionReturn, ListenFor, RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessage, SendMessageReturnMap, Timer } from '../../types/speedcontrol';
-import { RunDataActiveRunSurrounding, TimerChangesDisabled, TwitchCommercialTimer } from '../../types/speedcontrol/schemas';
+import { CommercialDuration, ExtensionReturn, ListenFor, RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessage, SendMessageReturnMap, Timer } from '../../types';
+import { RunDataActiveRunSurrounding, TimerChangesDisabled, TwitchCommercialTimer } from '../../types/schemas';
 import SpeedcontrolUtilShared, { onTimerChange } from '../shared';
 
+type RepType<T> = NodeCGTypes.ServerReplicantWithSchemaDefault<T>;
 const sc = 'nodecg-speedcontrol';
 
 class SpeedcontrolUtil extends SpeedcontrolUtilShared {
-  readonly runDataArray: ReplicantServer<RunDataArray>;
-  readonly runDataActiveRun: ReplicantServer<RunDataActiveRun>;
-  readonly runDataActiveRunSurrounding: ReplicantServer<RunDataActiveRunSurrounding>;
-  readonly timer: ReplicantServer<Timer>;
-  readonly runFinishTimes: ReplicantServer<RunFinishTimes>;
-  readonly twitchCommercialTimer: ReplicantServer<TwitchCommercialTimer>;
-  timerChangesDisabled: ReplicantServer<TimerChangesDisabled>;
+  readonly runDataArray: RepType<RunDataArray>;
+  readonly runDataActiveRun: RepType<RunDataActiveRun>;
+  readonly runDataActiveRunSurrounding: RepType<RunDataActiveRunSurrounding>;
+  readonly timer: RepType<Timer>;
+  readonly runFinishTimes: RepType<RunFinishTimes>;
+  readonly twitchCommercialTimer: RepType<TwitchCommercialTimer>;
+  timerChangesDisabled: RepType<TimerChangesDisabled>;
   sendMessage: SendMessage;
   listenFor: ListenFor;
 
-  constructor(nodecg: NodeCGServer) {
+  constructor(nodecg: NodeCGTypes.ServerAPI) {
     super();
-    this.runDataArray = nodecg.Replicant('runDataArray', sc);
-    this.runDataActiveRun = nodecg.Replicant('runDataActiveRun', sc);
-    this.runDataActiveRunSurrounding = nodecg.Replicant('runDataActiveRunSurrounding', sc);
-    this.timer = nodecg.Replicant('timer', sc);
-    this.runFinishTimes = nodecg.Replicant('runFinishTimes', sc);
-    this.twitchCommercialTimer = nodecg.Replicant('twitchCommercialTimer', sc);
-    this.timerChangesDisabled = nodecg.Replicant('timerChangesDisabled', sc);
+    const repWrapper = <T>(name: string) => nodecg.Replicant(name, sc) as unknown as RepType<T>;
+    this.runDataArray = repWrapper('runDataArray');
+    this.runDataActiveRun = repWrapper('runDataActiveRun');
+    this.runDataActiveRunSurrounding = repWrapper('runDataActiveRunSurrounding');
+    this.timer = repWrapper('timer');
+    this.runFinishTimes = repWrapper('runFinishTimes');
+    this.twitchCommercialTimer = repWrapper('twitchCommercialTimer');
+    this.timerChangesDisabled = repWrapper('timerChangesDisabled');
     this.sendMessage = (nodecg.extensions[sc] as unknown as ExtensionReturn).sendMessage;
     this.listenFor = (nodecg.extensions[sc] as unknown as ExtensionReturn).listenFor;
 

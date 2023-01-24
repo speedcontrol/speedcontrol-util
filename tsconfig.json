@@ -102,8 +102,7 @@
   },
   "include": [
     "src/**/*.ts",
-    "types/**/*.d.ts",
-    "schemas/**/*.d.ts"
+    "types/**/*.d.ts"
   ],
   "exclude": [
     "node_modules"

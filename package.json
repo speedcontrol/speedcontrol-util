@@ -27,28 +27,25 @@
     "build": "tsc -b tsconfig.json",
     "clean": "trash node_modules/.cache && trash dist",
     "copy-schemas": "trash schemas && shx cp -r node_modules/nodecg-speedcontrol/schemas schemas",
-    "copy-types": "concurrently \"npm:copy-types:*\"",
-    "copy-types:nodecg": "trash types/nodecg && shx cp -r node_modules/nodecg/types types/nodecg",
-    "copy-types:speedcontrol": "trash types/speedcontrol && shx cp -r node_modules/nodecg-speedcontrol/src/types types/speedcontrol && cd types/speedcontrol && shx rm schemas/.eslintrc.js .eslintrc.js shims-vue.d.ts VueDraggable.d.ts ParseDuration.d.ts tsconfig.json",
+    "copy-types": "trash types && shx cp -r node_modules/nodecg-speedcontrol/src/types types && cd types && shx rm schemas/.eslintrc.js .eslintrc.js shims-vue.d.ts augment-window.d.ts VueDraggable.d.ts ParseDuration.d.ts tsconfig.json",
     "watch": "tsc -b tsconfig.json -w"
   },
   "dependencies": {
+    "@alvancamp/test-nodecg-types": "^1.9.30",
     "@types/needle": "^3.2.0",
     "clone": "^2.1.2"
   },
   "devDependencies": {
     "@types/clone": "^2.1.1",
     "@types/node": "^18.11.18",
-    "@typescript-eslint/eslint-plugin": "^5.48.2",
-    "@typescript-eslint/parser": "^5.48.2",
-    "concurrently": "^7.6.0",
+    "@typescript-eslint/eslint-plugin": "^5.49.0",
+    "@typescript-eslint/parser": "^5.49.0",
     "eslint": "^8.32.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-import-resolver-typescript": "^3.5.3",
     "eslint-plugin-import": "^2.27.5",
-    "nodecg": "^1.9.0",
-    "nodecg-speedcontrol": "git+https://git@github.com/speedcontrol/nodecg-speedcontrol.git",
+    "nodecg-speedcontrol": "git+https://git@github.com/speedcontrol/nodecg-speedcontrol.git#nodecg-2",
     "shx": "^0.3.4",
     "trash-cli": "^5.0.0",
     "typescript": "^4.9.4"
