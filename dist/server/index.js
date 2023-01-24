@@ -40,13 +40,14 @@ const sc = 'nodecg-speedcontrol';
 class SpeedcontrolUtil extends shared_1.default {
     constructor(nodecg) {
         super();
-        this.runDataArray = nodecg.Replicant('runDataArray', sc);
-        this.runDataActiveRun = nodecg.Replicant('runDataActiveRun', sc);
-        this.runDataActiveRunSurrounding = nodecg.Replicant('runDataActiveRunSurrounding', sc);
-        this.timer = nodecg.Replicant('timer', sc);
-        this.runFinishTimes = nodecg.Replicant('runFinishTimes', sc);
-        this.twitchCommercialTimer = nodecg.Replicant('twitchCommercialTimer', sc);
-        this.timerChangesDisabled = nodecg.Replicant('timerChangesDisabled', sc);
+        const repWrapper = (name) => nodecg.Replicant(name, sc);
+        this.runDataArray = repWrapper('runDataArray');
+        this.runDataActiveRun = repWrapper('runDataActiveRun');
+        this.runDataActiveRunSurrounding = repWrapper('runDataActiveRunSurrounding');
+        this.timer = repWrapper('timer');
+        this.runFinishTimes = repWrapper('runFinishTimes');
+        this.twitchCommercialTimer = repWrapper('twitchCommercialTimer');
+        this.timerChangesDisabled = repWrapper('timerChangesDisabled');
         this.sendMessage = nodecg.extensions[sc].sendMessage;
         this.listenFor = nodecg.extensions[sc].listenFor;
         // Emit events when the timer state changes.

@@ -1,18 +1,17 @@
-import { NodeCGBrowser } from '../../types/nodecg/lib/nodecg-instance';
-import { ReplicantBrowser } from '../../types/nodecg/lib/replicant';
-import { CommercialDuration, RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessageReturnMap, Timer } from '../../types/speedcontrol';
-import { RunDataActiveRunSurrounding, TimerChangesDisabled, TwitchCommercialTimer } from '../../types/speedcontrol/schemas';
+import NodeCGTypes from '@alvancamp/test-nodecg-types';
+import { CommercialDuration, RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessageReturnMap, Timer } from '../../types';
+import { RunDataActiveRunSurrounding, TimerChangesDisabled, TwitchCommercialTimer } from '../../types/schemas';
 import SpeedcontrolUtilShared from '../shared';
 declare class SpeedcontrolUtil extends SpeedcontrolUtilShared {
-    readonly runDataArray: ReplicantBrowser<RunDataArray>;
-    readonly runDataActiveRun: ReplicantBrowser<RunDataActiveRun>;
-    readonly runDataActiveRunSurrounding: ReplicantBrowser<RunDataActiveRunSurrounding>;
-    readonly timer: ReplicantBrowser<Timer>;
-    readonly runFinishTimes: ReplicantBrowser<RunFinishTimes>;
-    readonly twitchCommercialTimer: ReplicantBrowser<TwitchCommercialTimer>;
-    timerChangesDisabled: ReplicantBrowser<TimerChangesDisabled>;
-    readonly nodecg: NodeCGBrowser;
-    constructor(nodecg: NodeCGBrowser);
+    readonly runDataArray: NodeCGTypes.ClientReplicant<RunDataArray>;
+    readonly runDataActiveRun: NodeCGTypes.ClientReplicant<RunDataActiveRun>;
+    readonly runDataActiveRunSurrounding: NodeCGTypes.ClientReplicant<RunDataActiveRunSurrounding>;
+    readonly timer: NodeCGTypes.ClientReplicant<Timer>;
+    readonly runFinishTimes: NodeCGTypes.ClientReplicant<RunFinishTimes>;
+    readonly twitchCommercialTimer: NodeCGTypes.ClientReplicant<TwitchCommercialTimer>;
+    timerChangesDisabled: NodeCGTypes.ClientReplicant<TimerChangesDisabled>;
+    readonly nodecg: NodeCGTypes.ClientAPI;
+    constructor(nodecg: NodeCGTypes.ClientAPI);
     /**
      * Returns the currently active run data object.
      */

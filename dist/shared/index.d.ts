@@ -1,7 +1,7 @@
 /// <reference types="node" />
+import NodeCGTypes from '@alvancamp/test-nodecg-types';
 import { EventEmitter } from 'events';
-import { OperationQueueItem } from '../../types/nodecg/lib/replicant';
-import { RunData, Timer } from '../../types/speedcontrol';
+import { RunData, Timer } from '../../types';
 interface SpeedcontrolUtil {
     on(event: 'timerStarted', listener: () => void): this;
     on(event: 'timerResumed', listener: () => void): this;
@@ -24,5 +24,5 @@ declare class SpeedcontrolUtil extends EventEmitter {
      */
     static getRunTotalPlayers(runData: RunData): number;
 }
-export declare function onTimerChange(class_: EventEmitter, newVal: Timer, oldVal?: Timer, opQ?: OperationQueueItem[]): void;
+export declare function onTimerChange(class_: EventEmitter, newVal?: Timer, oldVal?: Timer, opQ?: NodeCGTypes.Replicant.Operation<Timer>[]): void;
 export default SpeedcontrolUtil;

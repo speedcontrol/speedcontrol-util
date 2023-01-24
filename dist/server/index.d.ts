@@ -1,19 +1,19 @@
-import { NodeCGServer } from '../../types/nodecg/lib/nodecg-instance';
-import { ReplicantServer } from '../../types/nodecg/lib/replicant';
-import { CommercialDuration, ListenFor, RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessage, SendMessageReturnMap, Timer } from '../../types/speedcontrol';
-import { RunDataActiveRunSurrounding, TimerChangesDisabled, TwitchCommercialTimer } from '../../types/speedcontrol/schemas';
+import NodeCGTypes from '@alvancamp/test-nodecg-types';
+import { CommercialDuration, ListenFor, RunData, RunDataActiveRun, RunDataArray, RunFinishTimes, SendMessage, SendMessageReturnMap, Timer } from '../../types';
+import { RunDataActiveRunSurrounding, TimerChangesDisabled, TwitchCommercialTimer } from '../../types/schemas';
 import SpeedcontrolUtilShared from '../shared';
+type RepType<T> = NodeCGTypes.ServerReplicantWithSchemaDefault<T>;
 declare class SpeedcontrolUtil extends SpeedcontrolUtilShared {
-    readonly runDataArray: ReplicantServer<RunDataArray>;
-    readonly runDataActiveRun: ReplicantServer<RunDataActiveRun>;
-    readonly runDataActiveRunSurrounding: ReplicantServer<RunDataActiveRunSurrounding>;
-    readonly timer: ReplicantServer<Timer>;
-    readonly runFinishTimes: ReplicantServer<RunFinishTimes>;
-    readonly twitchCommercialTimer: ReplicantServer<TwitchCommercialTimer>;
-    timerChangesDisabled: ReplicantServer<TimerChangesDisabled>;
+    readonly runDataArray: RepType<RunDataArray>;
+    readonly runDataActiveRun: RepType<RunDataActiveRun>;
+    readonly runDataActiveRunSurrounding: RepType<RunDataActiveRunSurrounding>;
+    readonly timer: RepType<Timer>;
+    readonly runFinishTimes: RepType<RunFinishTimes>;
+    readonly twitchCommercialTimer: RepType<TwitchCommercialTimer>;
+    timerChangesDisabled: RepType<TimerChangesDisabled>;
     sendMessage: SendMessage;
     listenFor: ListenFor;
-    constructor(nodecg: NodeCGServer);
+    constructor(nodecg: NodeCGTypes.ServerAPI);
     /**
      * Returns the currently active run data object.
      */

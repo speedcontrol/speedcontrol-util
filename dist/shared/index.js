@@ -20,7 +20,7 @@ class SpeedcontrolUtil extends events_1.EventEmitter {
 }
 // Emit events when the timer state changes.
 function onTimerChange(class_, newVal, oldVal, opQ) {
-    if (!oldVal) {
+    if (!newVal || !oldVal) {
         return;
     }
     const oldState = oldVal.state;
@@ -51,15 +51,11 @@ function onTimerChange(class_, newVal, oldVal, opQ) {
         // If timer is paused/stopped and the time changes, it was edited somehow.
         if (['paused', 'stopped'].includes(newState) && oldState === newState
             && operation.path === '/' && operation.method === 'update'
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore: args not properly defined in typings
             && operation.args.prop === 'milliseconds') {
             class_.emit('timerEdited');
         }
         // When teams stop/undo.
-        if (operation.path === '/teamFinishTimes') {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore: args not properly defined in typings
+        if (operation.path === '/teamFinishTimes' && 'args' in operation && 'prop' in operation.args) {
             const teamID = operation.args.prop;
             const time = newVal.teamFinishTimes[teamID];
             if (operation.method === 'add') {
