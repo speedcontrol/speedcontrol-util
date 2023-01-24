@@ -1,6 +1,6 @@
+import NodeCGTypes from '@alvancamp/test-nodecg-types';
 import { EventEmitter } from 'events';
-import { OperationQueueItem } from '../../types/nodecg/lib/replicant';
-import { RunData, Timer } from '../../types/speedcontrol';
+import { RunData, Timer } from '../../types';
 
 interface SpeedcontrolUtil {
   on(event: 'timerStarted', listener: () => void): this;
@@ -38,11 +38,11 @@ class SpeedcontrolUtil extends EventEmitter {
 // Emit events when the timer state changes.
 export function onTimerChange(
   class_: EventEmitter,
-  newVal: Timer,
+  newVal?: Timer,
   oldVal?: Timer,
-  opQ?: OperationQueueItem[],
+  opQ?: NodeCGTypes.Replicant.Operation<Timer>[],
 ): void {
-  if (!oldVal) {
+  if (!newVal || !oldVal) {
     return;
   }
   const oldState = oldVal.state;
@@ -70,15 +70,11 @@ export function onTimerChange(
     // If timer is paused/stopped and the time changes, it was edited somehow.
     if (['paused', 'stopped'].includes(newState) && oldState === newState
     && operation.path === '/' && operation.method === 'update'
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore: args not properly defined in typings
     && operation.args.prop === 'milliseconds') {
       class_.emit('timerEdited');
     }
     // When teams stop/undo.
-    if (operation.path === '/teamFinishTimes') {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore: args not properly defined in typings
+    if (operation.path === '/teamFinishTimes' && 'args' in operation && 'prop' in operation.args) {
       const teamID = operation.args.prop as string;
       const time = newVal.teamFinishTimes[teamID];
       if (operation.method === 'add') {
