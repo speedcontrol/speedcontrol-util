@@ -31,23 +31,23 @@
     "watch": "tsc -b tsconfig.json -w"
   },
   "dependencies": {
-    "@alvancamp/test-nodecg-types": "^1.9.30",
+    "@nodecg/types": "^2.1.11",
     "@types/needle": "^3.2.0",
     "clone": "^2.1.2"
   },
   "devDependencies": {
     "@types/clone": "^2.1.1",
-    "@types/node": "^18.11.18",
-    "@typescript-eslint/eslint-plugin": "^5.49.0",
-    "@typescript-eslint/parser": "^5.49.0",
-    "eslint": "^8.32.0",
+    "@types/node": "^18.16.19",
+    "@typescript-eslint/eslint-plugin": "^5.61.0",
+    "@typescript-eslint/parser": "^5.61.0",
+    "eslint": "^8.44.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
-    "eslint-import-resolver-typescript": "^3.5.3",
+    "eslint-import-resolver-typescript": "^3.5.5",
     "eslint-plugin-import": "^2.27.5",
-    "nodecg-speedcontrol": "git+https://git@github.com/speedcontrol/nodecg-speedcontrol.git#nodecg-2",
+    "nodecg-speedcontrol": "git+https://git@github.com/speedcontrol/nodecg-speedcontrol.git",
     "shx": "^0.3.4",
     "trash-cli": "^5.0.0",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.5"
   }
 }
