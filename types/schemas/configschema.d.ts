@@ -24,6 +24,7 @@ export interface Configschema {
 		additionalScopes?: string[] | null;
 		channelName?: string;
 		streamTitle: string;
+		tagPlayersInStreamTitle: boolean;
 		streamDefaultGame: string;
 		metadataUseExternal?: boolean;
 		commercialsExtraButtons?: boolean;
@@ -36,6 +37,9 @@ export interface Configschema {
 	horaro: Horaro;
 	oengus: {
 		defaultMarathon: string;
+		/**
+		 * DEPRECATED; left for compatibility reasons.
+		 */
 		useJapanese: boolean;
 		ignoreGamesWhileImporting?: IgnoreGamesWhileImporting;
 		disableSpeedrunComLookup: boolean;
