@@ -16,27 +16,36 @@ jobs:
     steps:
     # Setup some Node.js stuff
     - name: Node.js setup
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: '18'
         registry-url: https://registry.npmjs.org/
 
-    # Set NPM cache options
-    - name: Set NPM cache
-      uses: actions/cache@v3
+    # Install pnpm
+    - uses: pnpm/action-setup@v4
+      name: Install pnpm
       with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
+        version: 9
 
-    # Update NPM to the latest version
-    - name: Update NPM installation
-      run: npm install -g npm@latest
+    # Gets pnpm's store directory (for next step)
+    - name: Get pnpm store directory
+      id: pnpm-cache
+      shell: bash
+      run: |
+        echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+    # Set pnpm cache options
+    - uses: actions/cache@v4
+      name: Setup pnpm cache
+      with:
+        path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
 
     # Checkout the main branch of this repository with full depth
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         token: ${{ secrets['GITHUB_TOKEN'] }}
         ref: master
@@ -60,7 +69,7 @@ jobs:
         git commit -m ${{ github.event.release.tag_name }} -a
         git push
 
-    # Checkout build branche and merge the main into build
+    # Checkout build branch and merge the main into build
     # This can "fail" if the build branch doesn't exist, but we should continue anyway
     - name: Checkout build branch and merge main into build
       continue-on-error: true
@@ -74,9 +83,9 @@ jobs:
       with:
         ssh-private-key: ${{ secrets['GH_SSH'] }}
 
-    # Install NPM dependencies
-    - name: Install NPM dependencies
-      run: npm ci
+    # Install pnpm dependencies
+    - name: Install pnpm dependencies
+      run: pnpm i --frozen-lockfile
 
     # Actually build everything
     - name: Build
